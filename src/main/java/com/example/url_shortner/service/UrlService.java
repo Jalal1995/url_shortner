@@ -20,7 +20,7 @@ import java.util.List;
 public class UrlService {
 
     @Value("${url.prefix}")
-    private static String URL_PREFIX;
+    private String URL_PREFIX;
 
     private final UrlRepository urlRepository;
 
@@ -46,7 +46,7 @@ public class UrlService {
     }
 
     public Url findAndCount(String shortUrl) {
-        Url url = urlRepository.findByShortUrl(shortUrl)
+        Url url = urlRepository.findByShortUrl(URL_PREFIX + shortUrl)
                 .orElseThrow(() -> new RuntimeException(String.format("There is no URL for : %s", shortUrl)));
         url.setVisitCount(url.getVisitCount() + 1);
         urlRepository.save(url);
