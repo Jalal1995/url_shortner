@@ -35,29 +35,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/**").permitAll();
 
-        http.authorizeRequests().antMatchers("/main-page").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-
-        http.
-                authorizeRequests()
-                .antMatchers(
-                        "/registration**",
-                        "/js/**",
-                        "/css/**",
-                        "/img/**",
-                        "/webjars/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-                .authenticated().and().csrf().disable().formLogin()
-                .loginPage("/login").failureUrl("/login?error=true")
-                .usernameParameter("user_name")
-                .passwordParameter("password")
-                .and().logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+//        http.authorizeRequests().antMatchers("/main-page").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+//
+//        http.
+//                authorizeRequests()
+//                .antMatchers(
+//                        "/registration**",
+//                        "/js/**",
+//                        "/css/**",
+//                        "/img/**",
+//                        "/webjars/**").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/registration").permitAll()
+//                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+//                .authenticated().and().csrf().disable().formLogin()
+//                .loginPage("/login").failureUrl("/login?error=true")
+//                .usernameParameter("user_name")
+//                .passwordParameter("password")
+//                .and().logout()
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login").and().exceptionHandling()
+//                .accessDeniedPage("/access-denied");
     }
 
     /*@Override
