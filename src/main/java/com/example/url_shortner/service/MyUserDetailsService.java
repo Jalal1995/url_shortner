@@ -45,7 +45,7 @@ public class MyUserDetailsService implements UserDetailsService {
         log.info(String.format(">>>> loading user details for user: %s", email));
 
         return repository.findByEmail(email)
-                .map(MyUserDetailsService::mapper_to_standard_ud)
+                .map(MyUserDetailsService::mapper_to_xUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User: %s isn't found in our DB", email)
                 ));
