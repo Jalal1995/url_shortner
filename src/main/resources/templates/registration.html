@@ -28,7 +28,7 @@
                         class="registration-section-container-description-link">Login</a></p>
                 <form action="#" th:action="@{/registration}" class="registration-section-container-form" th:object="${user}" method="post">
                     <div class="registration-section-container-form-input-wrapper">
-                        <img src="/img/user-icon.svg" alt="User Icon">
+                        <img src="/img/XUser-icon.svg" alt="User Icon">
                         <label for="full-name" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
                                class="validation-message"></label>
                         <input class="registration-section-container-form-input" id="full-name" placeholder="Full name"

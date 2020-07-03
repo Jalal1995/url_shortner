@@ -1,7 +1,7 @@
 package com.example.url_shortner.controller;
 
 
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.XUser;
 import com.example.url_shortner.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,28 +32,27 @@ public class LoginController {
     @RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
-        User user = new User();
-        modelAndView.addObject("user", user);
+        XUser XUser = new XUser();
+        modelAndView.addObject("user", XUser);
         modelAndView.setViewName("registration");
         return modelAndView;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+    public ModelAndView createNewUser(@Valid XUser XUser, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
-        if (userExists != null) {
+        if (userService.findUserByEmail(XUser.getEmail()).isPresent()) {
             bindingResult
-                    .rejectValue("email", "error.user",
-                            "There is already a user registered with the user name provided");
+                    .rejectValue("email", "error.XUser",
+                            "There is already a XUser registered with the XUser name provided");
         }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
 
-            userService.saveUser(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
+            userService.saveUser(XUser);
+            modelAndView.addObject("successMessage", "XUser has been registered successfully");
+            modelAndView.addObject("user", new XUser());
             modelAndView.setViewName("registration");
 
         }

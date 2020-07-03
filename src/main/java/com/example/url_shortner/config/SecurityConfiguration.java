@@ -16,50 +16,68 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
-
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers(
+                        "/registration**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**").permitAll()
+                .antMatchers("/", "/login", "/registration").permitAll()
+                //.antMatchers("/home").authenticated()
+                .antMatchers("/main-page").hasRole("USER")
+                .anyRequest().authenticated();
+
+       /* http
+                .rememberMe();*/
+
+        http
+                .formLogin()
+                .loginPage("/login")
+                /*.usernameParameter("username")
+                .passwordParameter("password")*/
+//        .successForwardUrl("/after_login")
+//        .failureForwardUrl("/login_failure")
+//        .failureHandler() Exceptions handling
+                .permitAll();
+
+
+
+    }
+
+
+
+ /*   @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/**").permitAll();
 
-//        http.authorizeRequests().antMatchers("/main-page").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-//
-//        http.
-//                authorizeRequests()
-//                .antMatchers(
-//                        "/registration**",
-//                        "/js/**",
-//                        "/css/**",
-//                        "/img/**",
-//                        "/webjars/**").permitAll()
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/registration").permitAll()
-//                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-//                .authenticated().and().csrf().disable().formLogin()
-//                .loginPage("/login").failureUrl("/login?error=true")
-//                .usernameParameter("user_name")
-//                .passwordParameter("password")
-//                .and().logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/login").and().exceptionHandling()
-//                .accessDeniedPage("/access-denied");
-    }
+        http.authorizeRequests().antMatchers("/main-page").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+
+        http.
+                authorizeRequests()
+                .antMatchers(
+                        "/registration**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/registration").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                .authenticated().and().csrf().disable().formLogin()
+                .loginPage("/login").failureUrl("/login?error=true")
+                .usernameParameter("user_name")
+                .passwordParameter("password")
+                .and().logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").and().exceptionHandling()
+                .accessDeniedPage("/access-denied");
+    }*/
 
     /*@Override
     public void configure(WebSecurity web) throws Exception {

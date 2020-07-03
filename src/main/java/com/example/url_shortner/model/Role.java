@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
+/*@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity*/
 public class Role {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
     private long id;
@@ -24,5 +24,5 @@ public class Role {
     public Role(String role){
         this.role = role;
     }
-
+*/
 }
