@@ -30,7 +30,7 @@ public class Url {
 
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
-    @Column(columnDefinition = "varchar(1000)")
+    @Column(columnDefinition = "varchar(1000)", unique = true)
     private String fullUrl;
 
     @NotNull

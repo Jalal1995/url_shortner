@@ -48,9 +48,4 @@ public class UrlController {
         log.info(savedUrl.getShortUrl());
         return mav;
     }
-
-    @GetMapping("/success")
-    public String testMethod() {
-        return "success";
-    }
 }

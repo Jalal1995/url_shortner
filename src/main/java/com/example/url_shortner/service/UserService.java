@@ -1,8 +1,11 @@
 package com.example.url_shortner.service;
 
-import com.example.url_shortner.model.XUser;
+
+import com.example.url_shortner.dto.RegRqUser;
+import com.example.url_shortner.model.User;
 import com.example.url_shortner.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,28 +14,31 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
-    }
-
-    public Optional<XUser> findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public XUser saveUser(XUser xuser) {
-        xuser.setActive(true);
-        xuser.setPassword(encoder.encode(xuser.getPassword()));
-        xuser.setRoles("USER");
-
-        return userRepository.save(xuser);
+        this.passwordEncoder = passwordEncoder;
     }
 
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        String.format("User `%s` not found", username)));
+    }
+
+    public boolean registerNewUser(RegRqUser regRqUserDto) {
+
+        Optional<User> found = userRepository.findByUsername(regRqUserDto.getUsername());
+
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(regRqUserDto, User.class);
+        user.setPassword(passwordEncoder.encode(regRqUserDto.getPassword()));
+        user.setRoles(new String[] {"USER"});
+
+        userRepository.save(user);
+        return !found.isPresent();
+    }
 }

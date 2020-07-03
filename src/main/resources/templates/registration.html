@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 
 <!-- Mirrored from www.alexshmyrkov.space/URL Shortener/registration.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Jun 2020 17:02:47 GMT -->
@@ -13,54 +12,56 @@
 </head>
 
 <body>
-    <div class="registration-container">
-        <header class="header">
-            <a href="registration.html" class="header-link"><img src="/img/iba-login-logo.png"
-                                                                 alt="IBA Tech Academy"></a>
-        </header>
+<div class="registration-container">
+    <header class="header">
+        <a href="registration.html" class="header-link"><img src="/img/iba-login-logo.png"
+                                                             alt="IBA Tech Academy"></a>
+    </header>
 
-        <section class="registration-section">
-            <img class="registration-section-image" src="/img/login-img.png" alt="robot w/ computers">
-            <div class="registration-section-container">
-                <h1 class="registration-section-container-title">Create an account</h1>
-                <p class="registration-section-container-description">Create your account, it takes less than a minute.
-                    If you already have an account - <a href="login"
-                        class="registration-section-container-description-link">Login</a></p>
-                <form action="#" th:action="@{/registration}" class="registration-section-container-form" th:object="${user}" method="post">
-                    <div class="registration-section-container-form-input-wrapper">
-                        <img src="/img/XUser-icon.svg" alt="User Icon">
-                        <label for="full-name" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
-                               class="validation-message"></label>
-                        <input class="registration-section-container-form-input" id="full-name" placeholder="Full name"
-                            type="text" th:field="*{fullName}">
-                    </div>
-                    <div class="registration-section-container-form-input-wrapper">
-                        <img src="/img/mail-icon.svg" alt="User Icon">
-                        <label for="email" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                               class="validation-message"></label>
-                        <input class="registration-section-container-form-input" id="email" placeholder="Email address"
-                            type="email" th:field="*{email}">
-                    </div>
-                    <div class="registration-section-container-form-input-wrapper">
-                        <img src="/img/lock-icon.svg" alt="User Icon">
-                        <label for="password" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                               class="validation-message"></label>
-                        <input class="registration-section-container-form-input" id="password" placeholder="Password"
-                            type="password" th:field="*{password}">
-                    </div>
-                    <div class="registration-section-container-form-input-wrapper mb0">
-                        <img src="/img/lock-icon.svg" alt="User Icon">
-                        <label for="confirm-password" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"
-                               class="validation-message"></label>
-                        <input class="registration-section-container-form-input" id="confirm-password"
-                            placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}">
-                    </div>
-                    <input type="submit" value="Create account" class="registration-section-container-form-submit">
-                    <h2><span class="text-success" th:utext="${successMessage}"></span></h2>
-                </form>
-            </div>
-        </section>
-    </div>
+    <section class="registration-section">
+        <img class="registration-section-image" src="/img/login-img.png" alt="robot w/ computers">
+        <div class="registration-section-container">
+            <h1 class="registration-section-container-title">Create an account</h1>
+            <p class="registration-section-container-description">Create your account, it takes less than a minute.
+                If you already have an account - <a href="login.html"
+                                                    class="registration-section-container-description-link">Login</a></p>
+            <form action="#" th:action="@{/registration}" th:object="${registerRq}" method="post" class="registration-section-container-form">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">username already exists.</div>
+                </div>
+                <div th:if="${param.success}">
+                    <div class="alert alert-info">You've successfully registered
+                        to our awesome app!</div>
+                </div>
+                <div class="registration-section-container-form-input-wrapper">
+                    <img src="/img/user-icon.svg" alt="User Icon">
+                    <label for="full-name"></label>
+                    <input class="registration-section-container-form-input" id="full-name" placeholder="Full name"
+                           type="text" th:field="*{fullName}">
+                </div>
+                <div class="registration-section-container-form-input-wrapper">
+                    <img src="/img/mail-icon.svg" alt="User Icon">
+                    <label for="username"></label>
+                    <input class="registration-section-container-form-input" id="username" placeholder="Email address"
+                           type="text" th:field="*{username}">
+                </div>
+                <div class="registration-section-container-form-input-wrapper">
+                    <img src="/img/lock-icon.svg" alt="User Icon">
+                    <label for="password"></label>
+                    <input class="registration-section-container-form-input" id="password" placeholder="Password"
+                           type="password" th:field="*{password}">
+                </div>
+                <div class="registration-section-container-form-input-wrapper mb0">
+                    <img src="/img/lock-icon.svg" alt="User Icon">
+                    <label for="confirm-password"></label>
+                    <input class="registration-section-container-form-input" id="confirm-password"
+                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}">
+                </div>
+                <input type="submit" value="Create account" class="registration-section-container-form-submit">
+            </form>
+        </div>
+    </section>
+</div>
 </body>
 
 
