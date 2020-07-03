@@ -30,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login", "/registration").permitAll()
                 //.antMatchers("/home").authenticated()
                 .antMatchers("/main-page").hasRole("USER")
+
                 .anyRequest().authenticated();
 
        /* http
@@ -38,8 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .formLogin()
                 .loginPage("/login")
-                /*.usernameParameter("username")
-                .passwordParameter("password")*/
+                .usernameParameter("email")
+                .passwordParameter("password")
 //        .successForwardUrl("/after_login")
 //        .failureForwardUrl("/login_failure")
 //        .failureHandler() Exceptions handling
