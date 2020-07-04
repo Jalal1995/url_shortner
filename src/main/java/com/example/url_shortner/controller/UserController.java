@@ -50,8 +50,15 @@ public class UserController {
         return new RedirectView(url);
     }
 
-    @GetMapping("/success")
+    @GetMapping("/landing")
     public String successFullMethod() {
-        return "success";
+        return "landing";
     }
+
+    @GetMapping("/forgot")
+    public String get_forgot_password() {
+        return "forgot-password";
+    }
+
+
 }

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
-@Component
+//@Component
 public class DbTest1 {
 
-    private final UrlRepository urlRepository;
+   /* private final UrlRepository urlRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -45,5 +45,5 @@ public class DbTest1 {
             user.getUrls().add(url);
             userRepository.save(user);
         };
-    }
+    }*/
 }

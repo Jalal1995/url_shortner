@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.List;
 
+import static com.google.common.hash.Hashing.*;
+
 @Service
 @Log4j2
 @PropertySource("classpath:url.properties")
@@ -27,7 +29,7 @@ public class UrlService {
     }
 
     public Url createAndSave(String fullUrl) {
-        String shortedUrl = Hashing.murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
+        String shortedUrl = murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
         log.info("shorted URL generated: " + shortedUrl);
         Url url = new Url();
         url.setShortUrl(URL_PREFIX + shortedUrl);
