@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "user")
-@ToString(exclude = "user")
+@EqualsAndHashCode(exclude = {"user","dates"})
+@ToString(exclude = {"user","dates"})
 @NoArgsConstructor
 public class Url {
 

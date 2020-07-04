@@ -1,6 +1,7 @@
 package com.example.url_shortner.service;
 
 import com.example.url_shortner.model.Url;
+import com.example.url_shortner.model.User;
 import com.example.url_shortner.repository.UrlRepository;
 import com.google.common.hash.Hashing;
 import lombok.extern.log4j.Log4j2;
@@ -28,7 +29,7 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
-    public Url createAndSave(String fullUrl) {
+    public Url createAndSave(String fullUrl, User user) {
         String shortedUrl = murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
         log.info("shorted URL generated: " + shortedUrl);
         Url url = new Url();
@@ -37,12 +38,14 @@ public class UrlService {
         url.setCreationDate(Instant.now());
         url.setVisitCount(0L);
         url.setIsActive(true);
+        url.setUser(user);
         return urlRepository.save(url);
     }
 
     public List<Url> findAll() {
         return urlRepository.findAll();
     }
+
 
     public Url findAndCount(String shortUrl) {
         Url url = urlRepository.findByShortUrl(URL_PREFIX + shortUrl)

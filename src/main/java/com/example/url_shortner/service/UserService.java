@@ -4,7 +4,9 @@ package com.example.url_shortner.service;
 import com.example.url_shortner.dto.RegRqUser;
 import com.example.url_shortner.model.User;
 import com.example.url_shortner.repository.UserRepository;
+import com.example.url_shortner.security.MyUserDetails;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,5 +42,16 @@ public class UserService {
 
         userRepository.save(user);
         return !found.isPresent();
+    }
+
+    public User findById(Long id){
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+    }
+
+    public User findUserFromAuthentication(Authentication auth){
+        Object principal = auth.getPrincipal();
+        MyUserDetails userDetails = (MyUserDetails) principal;
+        Long userId = userDetails.getId();
+        return findById(userId);
     }
 }
