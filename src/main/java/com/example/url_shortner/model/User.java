@@ -1,21 +1,24 @@
 package com.example.url_shortner.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = "urls")
+@ToString(exclude = "urls")
 @NoArgsConstructor
 public class User {
 
-    @Column(name = "u_id")
+    @Column(name = "user_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -53,4 +56,8 @@ public class User {
     public void setRoles(String[] roles) {
         this.roles = String.join(ROLES_DELIMITER, roles);
     }
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Url> urls = new HashSet<>();
 }

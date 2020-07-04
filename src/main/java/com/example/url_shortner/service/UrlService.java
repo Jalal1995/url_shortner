@@ -3,7 +3,6 @@ package com.example.url_shortner.service;
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.repository.UrlRepository;
 import com.google.common.hash.Hashing;
-import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,18 +29,17 @@ public class UrlService {
     public Url createAndSave(String fullUrl) {
         String shortedUrl = Hashing.murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
         log.info("shorted URL generated: " + shortedUrl);
-        Url url = Url.builder()
-                .shortUrl(URL_PREFIX + shortedUrl)
-                .fullUrl(fullUrl)
-                .creationDate(Instant.now())
-                .visitCount(0L)
-                .isActive(true)
-                .build();
+        Url url = new Url();
+        url.setShortUrl(URL_PREFIX + shortedUrl);
+        url.setFullUrl(fullUrl);
+        url.setCreationDate(Instant.now());
+        url.setVisitCount(0L);
+        url.setIsActive(true);
         return urlRepository.save(url);
     }
 
     public List<Url> findAll() {
-         return urlRepository.findAll();
+        return urlRepository.findAll();
     }
 
     public Url findAndCount(String shortUrl) {

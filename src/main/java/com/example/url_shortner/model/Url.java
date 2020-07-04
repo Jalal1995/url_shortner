@@ -1,24 +1,24 @@
 package com.example.url_shortner.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(exclude = "users")
+@ToString(exclude = "users")
 @NoArgsConstructor
-@Builder
 public class Url {
 
     @Id
+    @Column(name = "url_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,4 +37,11 @@ public class Url {
     private Boolean isActive;
 
     private Long visitCount;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @JoinTable(name = "users_urls",
+            joinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
+    private Set<User> users = new HashSet<>();
 }
