@@ -59,6 +59,6 @@ public class User {
     }
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Url> urls = new HashSet<>();
 }

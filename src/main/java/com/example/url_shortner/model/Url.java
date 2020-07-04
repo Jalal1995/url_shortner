@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 @NoArgsConstructor
 public class Url {
 
@@ -38,10 +38,15 @@ public class Url {
 
     private Long visitCount;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "users_urls",
             joinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
-    private Set<User> users = new HashSet<>();
+    private User user ;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ClickDates> dates = new HashSet<>();
+
 }
