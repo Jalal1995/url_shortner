@@ -24,7 +24,7 @@
                 information by email address and password</p>
             <form action="/login" method="post" class="login-section-container-form">
                 <div th:if="${param.error}">
-                    <div class="alert alert-danger">username and password didn't match.</div>
+                    <div class="error-message">username and password didn't match.</div>
                 </div>
                 <div class="login-section-container-form-input-wrapper">
                     <img src="/img/mail-icon.svg" alt="User Icon">

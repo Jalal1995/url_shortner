@@ -3,55 +3,55 @@ package com.example.url_shortner.service;
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.User;
 import com.example.url_shortner.repository.UrlRepository;
-import com.google.common.hash.Hashing;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
 
-import static com.google.common.hash.Hashing.*;
+import static com.google.common.hash.Hashing.murmur3_32;
 
 @Service
 @Log4j2
 @PropertySource("classpath:url.properties")
+@RequiredArgsConstructor
 public class UrlService {
 
     @Value("${url.prefix}")
     private String URL_PREFIX;
 
-    private final UrlRepository urlRepository;
+    private final UrlRepository urlRepo;
 
-    public UrlService(UrlRepository urlRepository) {
-        this.urlRepository = urlRepository;
-    }
-
-    public Url createAndSave(String fullUrl, User user) {
+    public Url create(String fullUrl, User user) {
         String shortedUrl = murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
-        log.info("shorted URL generated: " + shortedUrl);
-        Url url = new Url();
-        url.setShortUrl(URL_PREFIX + shortedUrl);
-        url.setFullUrl(fullUrl);
-        url.setCreationDate(Instant.now());
-        url.setVisitCount(0L);
-        url.setIsActive(true);
-        url.setUser(user);
-        return urlRepository.save(url);
+        Url url = Url.builder()
+                .shortUrl(URL_PREFIX + shortedUrl)
+                .fullUrl(fullUrl)
+                .creationDate(Instant.now())
+                .visitCount(0L)
+                .isActive(true)
+                .user(user)
+                .clicks(new HashSet<>())
+                .build();
+        return urlRepo.save(url);
     }
 
-    public List<Url> findAll() {
-        return urlRepository.findAll();
-    }
-
-
-    public Url findAndCount(String shortUrl) {
-        Url url = urlRepository.findByShortUrl(URL_PREFIX + shortUrl)
-                .orElseThrow(() -> new RuntimeException(String.format("There is no URL for : %s", shortUrl)));
+    public Url find(String shortUrl) {
+        Url url = urlRepo.findByShortUrl(URL_PREFIX + shortUrl)
+                .orElseThrow(() -> new RuntimeException(String.format("no URL for: %s", shortUrl)));
         url.setVisitCount(url.getVisitCount() + 1);
-        urlRepository.save(url);
-        return url;
+        return urlRepo.save(url);
+    }
+
+    public boolean isUrlValid(String fullUrl) {
+        UrlValidator urlValidator = new UrlValidator(
+                new String[]{"http", "https"}
+        );
+        return urlValidator.isValid(fullUrl);
     }
 }

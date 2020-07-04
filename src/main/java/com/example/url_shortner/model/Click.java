@@ -1,9 +1,7 @@
 package com.example.url_shortner.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -12,18 +10,22 @@ import java.time.Instant;
 @Data
 @EqualsAndHashCode(exclude = "url")
 @ToString(exclude = "url")
-public class ClickDates {
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class Click {
 
     @Id
-    @Column(name = "click_date_id")
+    @Column(name = "click_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Instant clickDate;
+
+    private Instant date;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "url_dates",
-            joinColumns = @JoinColumn(name = "click_date_id", referencedColumnName = "click_date_id"),
+    @JoinTable(name = "url_clicks",
+            joinColumns = @JoinColumn(name = "click_id", referencedColumnName = "click_id"),
             inverseJoinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"))
-    private Url url ;
+    private Url url;
 }

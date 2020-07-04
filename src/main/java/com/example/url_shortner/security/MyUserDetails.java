@@ -29,7 +29,9 @@ public class MyUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     @Override
     public String getPassword() {

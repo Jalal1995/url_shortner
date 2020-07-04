@@ -165,7 +165,7 @@ a {
     border-color: #fff;
 }
 
-.login-section-container-options-old-checkbox:checked+.login-section-container-options-checkmark {
+.login-section-container-options-old-checkbox:checked + .login-section-container-options-checkmark {
     background-color: #00B5AD;
     border: none;
 }
@@ -183,7 +183,7 @@ a {
     transform: rotate(45deg);
 }
 
-.login-section-container-options-old-checkbox:checked+.login-section-container-options-checkmark:after {
+.login-section-container-options-old-checkbox:checked + .login-section-container-options-checkmark:after {
     display: block;
 }
 
@@ -254,6 +254,14 @@ a {
 
 .mr0 {
     margin-right: 0;
+}
+
+.error-message {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: x-large;
+    color: #ff000c;
 }
 
 @media (max-width: 1585px) {

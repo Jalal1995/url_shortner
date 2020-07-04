@@ -12,9 +12,11 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"user","dates"})
-@ToString(exclude = {"user","dates"})
+@EqualsAndHashCode(exclude = {"user","clicks"})
+@ToString(exclude = {"user","clicks"})
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Url {
 
     @Id
@@ -40,13 +42,13 @@ public class Url {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "users_urls",
+    @JoinTable(name = "user_urls",
             joinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
-    private User user ;
+    private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ClickDates> dates = new HashSet<>();
+    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Click> clicks = new HashSet<>();
 
 }

@@ -32,7 +32,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .map(MyUserDetailsService::mapper)
-                .orElseThrow(()->new UsernameNotFoundException(
+                .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User `%s` not found", username)));
     }
 }
