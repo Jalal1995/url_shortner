@@ -1,5 +1,6 @@
 package com.example.url_shortner.service;
 
+import com.example.url_shortner.exception.UrlNotFoundException;
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.User;
 import com.example.url_shortner.repository.UrlRepository;
@@ -43,7 +44,7 @@ public class UrlService {
 
     public Url find(String shortUrl) {
         Url url = urlRepo.findByShortUrl(URL_PREFIX + shortUrl)
-                .orElseThrow(() -> new RuntimeException(String.format("no URL for: %s", shortUrl)));
+                .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", URL_PREFIX + shortUrl)));
         url.setVisitCount(url.getVisitCount() + 1);
         return urlRepo.save(url);
     }
