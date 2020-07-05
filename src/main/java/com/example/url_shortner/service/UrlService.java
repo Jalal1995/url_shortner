@@ -37,7 +37,7 @@ public class UrlService {
                 .visitCount(0L)
                 .isActive(true)
                 .user(user)
-                .clicks(new HashSet<>())
+                .visits(new HashSet<>())
                 .build();
         return urlRepo.save(url);
     }

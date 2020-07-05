@@ -13,10 +13,10 @@ import java.time.Instant;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class Click {
+public class Visit {
 
     @Id
-    @Column(name = "click_id")
+    @Column(name = "visit_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,8 +24,8 @@ public class Click {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "url_clicks",
-            joinColumns = @JoinColumn(name = "click_id", referencedColumnName = "click_id"),
+    @JoinTable(name = "url_visits",
+            joinColumns = @JoinColumn(name = "visit_id", referencedColumnName = "visit_id"),
             inverseJoinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"))
     private Url url;
 }

@@ -2,7 +2,7 @@ package com.example.url_shortner.controller;
 
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.User;
-import com.example.url_shortner.service.ClickService;
+import com.example.url_shortner.service.VisitService;
 import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ public class UrlController {
 
     private final UrlService urlService;
     private final UserService userService;
-    private final ClickService clickService;
+    private final VisitService visitService;
 
     @GetMapping("/tiny/{shortUrl}")
     public RedirectView getUrl(@PathVariable String shortUrl) {
         Url url = urlService.find(shortUrl);
-        clickService.create(url);
+        visitService.create(url);
         return new RedirectView(url.getFullUrl());
     }
 

@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"user","clicks"})
-@ToString(exclude = {"user","clicks"})
+@EqualsAndHashCode(exclude = {"user","visits"})
+@ToString(exclude = {"user","visits"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -49,6 +49,6 @@ public class Url {
 
     @JsonIgnore
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Click> clicks = new HashSet<>();
+    private Set<Visit> visits = new HashSet<>();
 
 }
