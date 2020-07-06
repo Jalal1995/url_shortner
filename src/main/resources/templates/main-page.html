@@ -37,7 +37,9 @@
     <div class="full-url-container">
         <h2 class="full-url-title">ENTER YOUR FULL URL</h2>
         <form th:action="@{/create}" method="post" class="full-url-input-container">
-            <input class="full-url-input" type="text" placeholder="Enter your URL" th:name="fullUrl">
+            <label>
+                <input class="full-url-input" type="text" required placeholder="Enter your URL" th:name="fullUrl">
+            </label>
             <input type="submit" class="full-url-btn" value="SHORTEN">
         </form>
         <table class="full-url-table">

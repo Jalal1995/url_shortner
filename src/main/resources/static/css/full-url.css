@@ -217,6 +217,24 @@ th {
     transition: .5s;
 }
 
+.modal-url-btn {
+    text-align: center;
+    width: 500px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    color: #333333;
+    background-color: #fff;
+    padding: 20px 60px;
+    border: 0.5px solid #515766;
+    border-radius: 20px;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: .5s;
+}
+
+
 .modal-main-btn:hover {
     box-shadow: 7px 7px 10px rgb(37, 36, 36);
 

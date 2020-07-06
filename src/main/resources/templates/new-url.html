@@ -12,11 +12,19 @@
 <body>
 <div class="modal">
     <div class="search-modal modal-window">
-        <h2 class="full-Url-title modal-search">Your short Url</h2>
-        <form action="" class="full-Url-input-container modal-styles">
-            <input class="full-Url-input" type="text" th:value="${shortUrl}" disabled>
-            <a href="#" class="full-Url-btn modal-styles">copy</a>
-        </form>
+        <div>
+            <h1 class="full-Url-title modal-search">Your short Url</h1>
+            <label for="demo1"></label>
+            <input type="text" class="modal-url-btn" id="demo1" th:value="${shortUrl}" disabled>
+        </div>
+        <button id="demo" class="modal-main-btn"
+                onclick="copyToClipboard(document.getElementById('demo1').value)">help me copy to the clipboard
+        </button>
+        <script>
+            function copyToClipboard(text) {
+                window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+            }
+        </script>
         <a href="/main" class="modal-main-btn">back to main</a>
     </div>
 </div>

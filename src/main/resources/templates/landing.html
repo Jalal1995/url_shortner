@@ -20,10 +20,10 @@
         <div class="main-header-wrapper">
             <div class="main-header-profile-wrapper">
                 <div class="main-header-profile-credentials" th:object="${user}">
-                    <span th:text="${user.fullName}" class="main-header-username">Anatolii Safronov</span>
+                    <span th:text="${user.fullName}" class="main-header-username">user full name</span>
                     <div class="log-out-block">
                         <img src="/img/log-out-icon.svg" alt="Log out">
-                        <a href="login" class="log-out-btn">Log out</a>
+                        <a href="/logout" class="log-out-btn">Log out</a>
                     </div>
                 </div>
                 <img class="main-header-XUser-icon" src="/img/user-icon-with-background.svg" alt="User Icon">
@@ -39,7 +39,7 @@
             <p class="short-url-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
                 laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <a href="main" class="short-url-btn">get started</a>
+            <a href="/main" class="short-url-btn">get started</a>
         </div>
     </main>
 </body>
