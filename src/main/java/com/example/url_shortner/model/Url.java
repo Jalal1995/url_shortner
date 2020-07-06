@@ -7,13 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"user","visits"})
-@ToString(exclude = {"user","visits"})
+@EqualsAndHashCode(exclude = {"user", "visits"})
+@ToString(exclude = {"user", "visits"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -49,6 +49,6 @@ public class Url {
 
     @JsonIgnore
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Visit> visits = new HashSet<>();
+    private List<Visit> visits = new ArrayList<>();
 
 }

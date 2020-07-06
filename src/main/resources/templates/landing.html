@@ -19,8 +19,8 @@
                                                                alt="IBA Tech Academy"></a>
         <div class="main-header-wrapper">
             <div class="main-header-profile-wrapper">
-                <div class="main-header-profile-credentials">
-                    <span class="main-header-username">Anatolii Safronov</span>
+                <div class="main-header-profile-credentials" th:object="${user}">
+                    <span th:text="${user.fullName}" class="main-header-username">Anatolii Safronov</span>
                     <div class="log-out-block">
                         <img src="/img/log-out-icon.svg" alt="Log out">
                         <a href="login" class="log-out-btn">Log out</a>

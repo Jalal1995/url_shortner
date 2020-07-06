@@ -10,10 +10,13 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static com.google.common.hash.Hashing.murmur3_32;
 
@@ -21,6 +24,7 @@ import static com.google.common.hash.Hashing.murmur3_32;
 @Log4j2
 @PropertySource("classpath:url.properties")
 @RequiredArgsConstructor
+@Transactional
 public class UrlService {
 
     @Value("${url.prefix}")
@@ -29,15 +33,19 @@ public class UrlService {
     private final UrlRepository urlRepo;
 
     public Url create(String fullUrl, User user) {
-        String shortedUrl = murmur3_32().hashString(fullUrl, StandardCharsets.UTF_8).toString();
+        String createdShortUrl = murmur3_32().hashString(fullUrl + user.getId(), StandardCharsets.UTF_8).toString();
+        urlRepo.findByShortUrl(URL_PREFIX + createdShortUrl).ifPresent(url -> {
+            throw new RuntimeException("you have already shorted this link");
+        });
+
         Url url = Url.builder()
-                .shortUrl(URL_PREFIX + shortedUrl)
+                .shortUrl(URL_PREFIX + createdShortUrl)
                 .fullUrl(fullUrl)
                 .creationDate(Instant.now())
                 .visitCount(0L)
                 .isActive(true)
                 .user(user)
-                .visits(new HashSet<>())
+                .visits(new ArrayList<>())
                 .build();
         return urlRepo.save(url);
     }
@@ -54,5 +62,10 @@ public class UrlService {
                 new String[]{"http", "https"}
         );
         return urlValidator.isValid(fullUrl);
+    }
+
+    public Url findByShortUrl(String shortUrl) {
+        return urlRepo.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", shortUrl)));
     }
 }

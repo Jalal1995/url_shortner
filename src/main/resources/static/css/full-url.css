@@ -97,7 +97,7 @@ td {
 
 .full-url-table tr td:nth-child(4) {
     position: relative;
-    padding: 0 45px;
+    padding: 0 0px;
 }
 
 thead {
@@ -115,7 +115,7 @@ th {
 
 
 .full-url-table tr>td:nth-child(2) {
-    font-size: 18px;
+    font-size: 16px;
     padding: 10px 20px;
 }
 
@@ -138,6 +138,19 @@ th {
     .full-url-img {
         display: none;
     }
+}
+
+.foo {
+    width:450px;
+    word-wrap:break-word;
+}
+
+.foo-short {
+    width:230px;
+}
+
+.foo2 {
+    width:60px;
 }
 
 .modal {

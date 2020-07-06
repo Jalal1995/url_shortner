@@ -2,9 +2,9 @@ package com.example.url_shortner.controller;
 
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.User;
-import com.example.url_shortner.service.VisitService;
 import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.UserService;
+import com.example.url_shortner.service.VisitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -38,7 +38,9 @@ public class UrlController {
         if (!valid) throw new RuntimeException(String.format("URL Invalid: %s", fullUrl));
         User user = userService.extractUserFromAuth(auth);
         Url url = urlService.create(fullUrl, user);
-        mav.setViewName("success");
+        log.info(user);
+        log.info(url);
+        mav.setViewName("new-url");
         mav.addObject("shortUrl", url.getShortUrl());
         return mav;
     }

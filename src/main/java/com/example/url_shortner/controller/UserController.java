@@ -27,11 +27,6 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping({"/main", "/"})
-    public String getMainPage() {
-        return "main-page";
-    }
-
     @GetMapping("/registration")
     public ModelAndView getRegistrationPage(ModelAndView mav) {
         mav.setViewName("registration");
@@ -46,11 +41,6 @@ public class UserController {
         boolean success = userService.registerNewUser(regReqUserDto);
         String redirect = success ? "/registration?success" : "/registration?error";
         return new RedirectView(redirect);
-    }
-
-    @GetMapping("/landing")
-    public String successFullMethod() {
-        return "landing";
     }
 
     @GetMapping("/forgot")
