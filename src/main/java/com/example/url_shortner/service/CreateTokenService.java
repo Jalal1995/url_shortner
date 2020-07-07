@@ -6,8 +6,10 @@ import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.ConfirmationTokenRepository;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CreateTokenService {
 
     private final ConfirmationTokenRepository tokenRepository;

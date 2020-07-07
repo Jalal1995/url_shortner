@@ -1,6 +1,5 @@
 package com.example.url_shortner.controller;
 
-
 import com.example.url_shortner.dto.RegRqUser;
 import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.UserInfo;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
 
 @Controller
 @RequestMapping("/")
@@ -43,11 +40,10 @@ public class UserController {
             throw new RuntimeException("password confirm doesn't match");
         boolean existingUser = userService.findByUsername(regReqUserDto.getUsername());
         log.info(existingUser);
-        if(existingUser)
-        {
-            modelAndView.addObject("message","This email already exists!");
+        if (existingUser) {
+            modelAndView.addObject("message", "This email already exists!");
             modelAndView.setViewName("error");
-        }else {
+        } else {
             tokenService.createToken(user);
             rattrs.addAttribute("email", user.getUsername());
         }
@@ -57,27 +53,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/successful-registration", method = RequestMethod.GET)
-    public ModelAndView getSuccessRegister(ModelAndView modelAndView,@ModelAttribute("email") String email){
+    public ModelAndView getSuccessRegister(ModelAndView modelAndView, @ModelAttribute("email") String email) {
         modelAndView.addObject("emailId", email);
         log.info(email);
         modelAndView.setViewName("successfulRegistration");
         return modelAndView;
     }
 
-    @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView confirmUserAccount(ModelAndView modelAndView,
-                                           @RequestParam("token") String confirmationToken){
+                                           @RequestParam("token") String confirmationToken) {
 
         ConfirmationToken token = tokenService.findByConfirmationToken(confirmationToken);
-        if(token != null){
+        if (token != null) {
             UserInfo user = userService.findUser(token.getUser().getUsername());
             user.setEnabled(true);
             userService.registerNewUser(user);
             modelAndView.setViewName("accountVerified");
-        }
-        else
-        {
-            modelAndView.addObject("message","The link is invalid or broken!");
+        } else {
+            modelAndView.addObject("message", "The link is invalid or broken!");
             modelAndView.setViewName("error");
         }
 

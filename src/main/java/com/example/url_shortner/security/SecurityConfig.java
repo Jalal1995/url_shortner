@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.concurrent.TimeUnit;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,11 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/css/**", "/js/**", "/img/**").permitAll()
-                .antMatchers("/registration/**", "/login/**", "/forgot").permitAll()
-                .antMatchers("/facebooklogin/**", "/facebook/**", "/facebookprofiledata/**").permitAll()
-                .antMatchers("/confirm-account","/successful-registration").permitAll()
-                .antMatchers("/tiny/**").permitAll()
+                    .antMatchers("/resources/**", "/css/**", "/js/**", "/img/**").permitAll()
+                    .antMatchers("/registration/**", "/login/**", "/forgot").permitAll()
+                    .antMatchers("/facebooklogin/**", "/facebook/**", "/facebookprofiledata/**").permitAll()
+                    .antMatchers("/confirm-account", "/successful-registration").permitAll()
+                    .antMatchers("/tiny/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,13 +46,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/landing", true)
                 .and()
+                .rememberMe()
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+                    .key("somethingverysecured")
+                .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login");
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
 
     }
 
