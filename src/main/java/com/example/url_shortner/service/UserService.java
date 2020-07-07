@@ -26,11 +26,12 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public boolean registerNewUser(RegRqUser regRqUserDto) {
-        Optional<UserInfo> found = userRepo.findByUsername(regRqUserDto.getUsername());
-        ModelMapper modelMapper = new ModelMapper();
-        UserInfo user = modelMapper.map(regRqUserDto, UserInfo.class);
-        user.setPassword(encoder.encode(regRqUserDto.getPassword()));
+    public boolean registerNewUser(UserInfo user) {
+        Optional<UserInfo> found = userRepo.findByUsername(user.getUsername());
+        /*ModelMapper modelMapper = new ModelMapper();
+        UserInfo user = modelMapper.map(regRqUserDto, UserInfo.class);*/
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setEnabled(true);
         user.setRoles(new String[]{"USER"});
         userRepo.save(user);
         return !found.isPresent();
@@ -44,6 +45,17 @@ public class UserService {
 
     public Optional<UserInfo> findByEmail(String email) {
         return userRepo.findByUsername(email);
+    }
+
+    public boolean findByUsername(String username) {
+        return userRepo.findByUsername(username).isPresent();
+                /*.orElseThrow(() -> new UsernameNotFoundException(
+                String.format("User `%s` not found", email)));*/
+    }
+
+    public UserInfo findUser(String username) {
+        return userRepo.findByUsername(username).get();
+
     }
 
     public void update(UserInfo dbUser) {

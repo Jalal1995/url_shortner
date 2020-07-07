@@ -31,6 +31,8 @@ public class UserInfo {
 
     private String roles;
 
+    private boolean isEnabled;
+
     @Transient
     @JsonIgnore
     private final String ROLES_DELIMITER = ":";
