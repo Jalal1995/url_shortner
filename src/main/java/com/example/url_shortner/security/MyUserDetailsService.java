@@ -1,6 +1,6 @@
 package com.example.url_shortner.security;
 
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +19,7 @@ public class MyUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public static UserDetails mapper(User user) {
+    public static UserDetails mapper(UserInfo user) {
         return new MyUserDetails(
                 user.getId(),
                 user.getUsername(),
@@ -33,6 +33,6 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepository.findByUsername(username)
                 .map(MyUserDetailsService::mapper)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        String.format("User `%s` not found", username)));
+                        String.format("UserInfo `%s` not found", username)));
     }
 }

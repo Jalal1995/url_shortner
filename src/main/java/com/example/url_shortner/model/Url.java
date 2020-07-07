@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,8 @@ public class Url {
 
     private Instant creationDate;
 
-    @NotNull
-    @Size(min = 1, message = "This field can't be empty.")
     private String shortUrl;
 
-    @NotNull
-    @Size(min = 1, message = "This field can't be empty.")
     @Column(columnDefinition = "varchar(1000)", unique = true)
     private String fullUrl;
 
@@ -45,7 +40,7 @@ public class Url {
     @JoinTable(name = "user_urls",
             joinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
-    private User user;
+    private UserInfo user;
 
     @JsonIgnore
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

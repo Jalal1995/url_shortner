@@ -2,14 +2,15 @@ package com.example.url_shortner.service;
 
 
 import com.example.url_shortner.dto.RegRqUser;
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UserRepository;
-import com.example.url_shortner.security.MyUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -26,24 +27,33 @@ public class UserService {
     }
 
     public boolean registerNewUser(RegRqUser regRqUserDto) {
-        Optional<User> found = userRepo.findByUsername(regRqUserDto.getUsername());
+        Optional<UserInfo> found = userRepo.findByUsername(regRqUserDto.getUsername());
         ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(regRqUserDto, User.class);
+        UserInfo user = modelMapper.map(regRqUserDto, UserInfo.class);
         user.setPassword(encoder.encode(regRqUserDto.getPassword()));
         user.setRoles(new String[]{"USER"});
         userRepo.save(user);
         return !found.isPresent();
     }
 
-    public User findById(Long id) {
-        return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("user not found"));
+    public UserInfo extractUserFromAuth(Authentication auth) {
+        String username = auth.getName();
+        return findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("no user with username %s", username)));
     }
 
-    public User extractUserFromAuth(Authentication auth) {
-        Object principal = auth.getPrincipal();
-        MyUserDetails userDetails = (MyUserDetails) principal;
-        Long userId = userDetails.getId();
-        return findById(userId);
+    public Optional<UserInfo> findByEmail(String email) {
+        return userRepo.findByUsername(email);
+    }
+
+    public void update(UserInfo dbUser) {
+        userRepo.save(dbUser);
+    }
+
+    public UserInfo save(UserInfo userInfo) {
+        if (StringUtils.hasText(userInfo.getPassword())) {
+            userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+        }
+        return userRepo.save(userInfo);
     }
 }

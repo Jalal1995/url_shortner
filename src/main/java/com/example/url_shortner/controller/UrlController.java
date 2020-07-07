@@ -1,7 +1,7 @@
 package com.example.url_shortner.controller;
 
 import com.example.url_shortner.model.Url;
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.UserService;
 import com.example.url_shortner.service.VisitService;
@@ -36,7 +36,7 @@ public class UrlController {
                                ModelAndView mav) {
         boolean valid = urlService.isUrlValid(fullUrl);
         if (!valid) throw new RuntimeException(String.format("URL Invalid: %s", fullUrl));
-        User user = userService.extractUserFromAuth(auth);
+        UserInfo user = userService.extractUserFromAuth(auth);
         Url url = urlService.create(fullUrl, user);
         log.info(user);
         log.info(url);

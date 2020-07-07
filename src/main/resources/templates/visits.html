@@ -22,7 +22,7 @@
     </tr>
     </thead>
     <tr>
-        <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy')}">21.06.2020</td>
+        <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy - HH:mm')}">21.06.2020</td>
         <td>
             <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
                 fullUrl

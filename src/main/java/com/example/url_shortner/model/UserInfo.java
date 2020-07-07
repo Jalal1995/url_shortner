@@ -4,38 +4,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @EqualsAndHashCode(exclude = "urls")
 @ToString(exclude = "urls")
 @NoArgsConstructor
-public class User {
+@Table(name = "user")
+public class UserInfo {
+
+    private static final long serialVersionUID = -3520127269892525916L;
 
     @Column(name = "user_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    @NotNull
-    @Size(min = 1, message = "This field cannot be empty.")
     private String fullName;
 
     @Column(unique = true)
-    @NotNull
-    @Size(min = 1, message = "This field cannot be empty.")
     private String username;
 
-    @NotNull
-    @Size(min = 1, message = "This field cannot be empty.")
     private String password;
 
     private String roles;
@@ -44,7 +35,7 @@ public class User {
     @JsonIgnore
     private final String ROLES_DELIMITER = ":";
 
-    public User(String fullName, String username, String password, String[] roles) {
+    public UserInfo(String fullName, String username, String password, String[] roles) {
         this.fullName = fullName;
         this.username = username;
         this.password = password;

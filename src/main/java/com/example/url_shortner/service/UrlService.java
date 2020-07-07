@@ -2,7 +2,7 @@ package com.example.url_shortner.service;
 
 import com.example.url_shortner.exception.UrlNotFoundException;
 import com.example.url_shortner.model.Url;
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
 
 import static com.google.common.hash.Hashing.murmur3_32;
 
@@ -32,7 +30,7 @@ public class UrlService {
 
     private final UrlRepository urlRepo;
 
-    public Url create(String fullUrl, User user) {
+    public Url create(String fullUrl, UserInfo user) {
         String createdShortUrl = murmur3_32().hashString(fullUrl + user.getId(), StandardCharsets.UTF_8).toString();
         urlRepo.findByShortUrl(URL_PREFIX + createdShortUrl).ifPresent(url -> {
             throw new RuntimeException("you have already shorted this link");

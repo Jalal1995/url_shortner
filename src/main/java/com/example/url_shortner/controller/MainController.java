@@ -1,7 +1,7 @@
 package com.example.url_shortner.controller;
 
 import com.example.url_shortner.model.Url;
-import com.example.url_shortner.model.User;
+import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,7 @@ public class MainController {
 
     @GetMapping({"/main", "/"})
     public ModelAndView getMainPage(Authentication auth, ModelAndView mav) {
-        User user = userService.extractUserFromAuth(auth);
+        UserInfo user = userService.extractUserFromAuth(auth);
         List<Url> urls = user.getUrls();
         mav.addObject("urls", urls);
         mav.addObject("user", user);
@@ -31,7 +31,7 @@ public class MainController {
 
     @GetMapping("/landing")
     public ModelAndView successFullMethod(Authentication auth, ModelAndView mav) {
-        User user = userService.extractUserFromAuth(auth);
+        UserInfo user = userService.extractUserFromAuth(auth);
         mav.addObject("user", user);
         mav.setViewName("landing");
         return mav;

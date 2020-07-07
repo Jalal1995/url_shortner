@@ -14,34 +14,34 @@
 
 <body>
 
-    <header class="main-header">
-        <a href="main-page.html" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
-                                                               alt="IBA Tech Academy"></a>
-        <div class="main-header-wrapper">
-            <div class="main-header-profile-wrapper">
-                <div class="main-header-profile-credentials" th:object="${user}">
-                    <span th:text="${user.fullName}" class="main-header-username">user full name</span>
-                    <div class="log-out-block">
-                        <img src="/img/log-out-icon.svg" alt="Log out">
-                        <a href="/logout" class="log-out-btn">Log out</a>
-                    </div>
+<header class="main-header">
+    <a href="main-page.html" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
+                                                           alt="IBA Tech Academy"></a>
+    <div class="main-header-wrapper">
+        <div class="main-header-profile-wrapper">
+            <div class="main-header-profile-credentials" th:object="${user}">
+                <span th:text="${user.fullName}" class="main-header-username">user full name</span>
+                <div class="log-out-block">
+                    <img src="/img/log-out-icon.svg" alt="Log out">
+                    <a href="/logout" class="log-out-btn">Log out</a>
                 </div>
-                <img class="main-header-XUser-icon" src="/img/user-icon-with-background.svg" alt="User Icon">
             </div>
+            <img class="main-header-XUser-icon" src="/img/user-icon-with-background.svg" alt="User Icon">
         </div>
-    </header>
-    <main class="short-url-container">
-        <div>
-            <img src="/img/short-url-robot.png" class="short-url-img" alt="robot">
-        </div>
-        <div class="short-url-content">
-            <h2 class="short-url-title">Lorem</h2>
-            <p class="short-url-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <a href="/main" class="short-url-btn">get started</a>
-        </div>
-    </main>
+    </div>
+</header>
+<main class="short-url-container">
+    <div>
+        <img src="/img/short-url-robot.png" class="short-url-img" alt="robot">
+    </div>
+    <div class="short-url-content">
+        <h2 class="short-url-title">Lorem</h2>
+        <p class="short-url-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <a href="/main" class="short-url-btn">get started</a>
+    </div>
+</main>
 </body>
 
 

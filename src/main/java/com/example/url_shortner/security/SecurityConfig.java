@@ -3,6 +3,7 @@ package com.example.url_shortner.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/resources/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .antMatchers("/registration/**", "/login/**", "/forgot").permitAll()
+                .antMatchers("/facebooklogin/**", "/facebook/**", "/facebookprofiledata/**").permitAll()
                 .antMatchers("/tiny/**").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -60,5 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(myUserDetailsService);
         return provider;
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
