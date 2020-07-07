@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-
-<!-- Mirrored from www.alexshmyrkov.space/URL Shortener/main-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Jun 2020 17:05:25 GMT -->
-<!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=UTF-8"/><!-- /Added by HTTrack -->
 <head>
     <meta charset="UTF-8">
@@ -21,8 +17,6 @@
     <link rel="stylesheet" href="/css/short-url.css">
     <link rel="stylesheet" href="/css/full-url.css">
 </head>
-<!--The modal windows are commented down below-->
-
 <body>
 <header class="main-header">
     <a href="main-page.html" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
@@ -90,83 +84,11 @@
         </table>
         <ul class="nav nav-pills">
             <li class="nav-item"
-                th:each="i : ${#numbers.sequence(0,data.totalPages)}"><a
+                th:each="i : ${#numbers.sequence(0,data.totalPages - 1)}"><a
                     th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
                     th:classappend="${currentPage}==${i}?'active':''"></a></li>
         </ul>
     </div>
 </main>
 </body>
-
-
-<!-- Mirrored from www.alexshmyrkov.space/URL Shortener/main-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Jun 2020 17:05:53 GMT -->
 </html>
-
-
-<!-- ===================== Table modal window ==========================-->
-<!--<div class="modal">-->
-<!--    <div class="modal-window">-->
-<!--        <a href="#" class="cross"><img src="./img/cross.png" alt="cross"></a>-->
-<!--        <h2 class="full-Url-title modal-styles">Your short Url</h2>-->
-<!--        <table>-->
-<!--            <tbody class="short-Url-table">-->
-<!--                <thead>-->
-<!--                    <th>Creation date</th>-->
-<!--                    <th>Short URL</th>-->
-<!--                    <th>Visit count</th>-->
-<!--                </thead>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td>21.06.2020</td>-->
-<!--                    <td>https://cutt.ly/DyL7q0R</td>-->
-<!--                    </td>-->
-<!--                    <td>21213400</td>-->
-<!--                </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--        <a href="#" class="modal-main-btn">to main</a>-->
-<!--    </div>-->
-<!--</div>-->
-
-
-<!-- ===================== Search modal window ==========================-->
-<!--<div class="modal">-->
-<!--    <div class="search-modal modal-window">-->
-<!--        <a href="#" class="cross"><img src="./img/cross.png" alt="cross"></a>-->
-<!--        <h2 class="full-Url-title modal-search">Your short Url</h2>-->
-<!--        <form action="" class="full-Url-input-container modal-styles">-->
-<!--            <input class="full-Url-input" type="text" placeholder="Your URL">-->
-<!--            <a href="#" class="full-Url-btn modal-styles">copy</a>-->
-<!--        </form>-->
-<!--        <a href="#" class="modal-main-btn">to main</a>-->
-<!--    </div>-->
-<!--</div>-->

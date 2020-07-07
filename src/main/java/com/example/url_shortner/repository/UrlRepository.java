@@ -13,6 +13,4 @@ import java.util.Optional;
 public interface UrlRepository extends JpaRepository<Url, Long> {
     Optional<Url> findByShortUrl(String shortUrl);
     Page<Url> findAllByUser(UserInfo user, Pageable page);
-    //List<Url> findAllByUser(UserInfo userInfo);
-    //Page<Visit> findAllByUrl(Url url, Pageable page);
 }

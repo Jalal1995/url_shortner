@@ -37,8 +37,6 @@ public class MainController {
         log.info(String.format("user :%s", userInfo));
         model.addAttribute("data", urlRepository.findAllByUser(userInfo,PageRequest.of(page, 4)));
         model.addAttribute("currentPage", page);
-        //List<Url> urls = user.getUrls();
-        //mav.addObject("urls", urls);
         mav.addObject("user", userInfo
         );
         mav.setViewName("main-page");
