@@ -8,6 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>URL shortener: full url</title>
     <link rel="stylesheet" href="/css/user-profile.css">
     <link rel="stylesheet" href="/css/short-url.css">
@@ -51,7 +59,7 @@
             <th style="width: 60px;">Visit details</th>
             </thead>
             <tbody>
-            <tr th:each="url : ${urls}">
+            <tr th:each="url : ${data.content}">
                 <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy')}">21.06.2020</td>
                 <td>
                     <div class="foo-short">
@@ -80,6 +88,12 @@
             </tr>
             </tbody>
         </table>
+        <ul class="nav nav-pills">
+            <li class="nav-item"
+                th:each="i : ${#numbers.sequence(0,data.totalPages)}"><a
+                    th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
+                    th:classappend="${currentPage}==${i}?'active':''"></a></li>
+        </ul>
     </div>
 </main>
 </body>

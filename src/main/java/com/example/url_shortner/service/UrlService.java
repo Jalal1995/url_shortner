@@ -9,12 +9,14 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.hash.Hashing.murmur3_32;
 
@@ -65,5 +67,9 @@ public class UrlService {
     public Url findByShortUrl(String shortUrl) {
         return urlRepo.findByShortUrl(shortUrl)
                 .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", shortUrl)));
+    }
+
+    public List<Url> findAll(Pageable of) {
+        return urlRepo.findAll();
     }
 }

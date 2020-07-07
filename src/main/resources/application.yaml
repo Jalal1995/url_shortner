@@ -9,14 +9,14 @@ spring:
 
   jpa:
     generate-ddl: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create-drop
     show-sql: false
 
   mail:
     host:  smtp.gmail.com
     port: 587
-    username: example@gmail.com
-    password: example
+    username: url.shortener.spring@gmail.com
+    password: Url-1234
     properties:
       mail:
         smtp:

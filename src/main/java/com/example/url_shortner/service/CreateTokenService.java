@@ -24,7 +24,7 @@ public class CreateTokenService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getUsername());
         mailMessage.setSubject("Complete Registration!");
-        mailMessage.setFrom("ruslan.hasanzada@gmail.com");
+        mailMessage.setFrom("url.shortener.spring@gmail.com");
         mailMessage.setText("To confirm your account, please click here : "
                 +"http://localhost:8080/confirm-account?token="+confirmationToken.getConfirmationToken());
         emailSenderService.sendEmail(mailMessage);

@@ -7,8 +7,10 @@ import com.example.url_shortner.service.UserService;
 import com.example.url_shortner.service.VisitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -33,7 +35,8 @@ public class UrlController {
     @PostMapping("/create")
     public ModelAndView create(@RequestParam String fullUrl,
                                Authentication auth,
-                               ModelAndView mav) {
+                               ModelAndView mav){
+
         boolean valid = urlService.isUrlValid(fullUrl);
         if (!valid) throw new RuntimeException(String.format("URL Invalid: %s", fullUrl));
         UserInfo user = userService.extractUserFromAuth(auth);
