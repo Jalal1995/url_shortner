@@ -4,6 +4,7 @@ package com.example.url_shortner.service;
 import com.example.url_shortner.dto.RegRqUser;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+@Log4j2
 @Service
 @Transactional
 public class UserService {
@@ -37,6 +39,12 @@ public class UserService {
         return !found.isPresent();
     }
 
+    public void updateUser(UserInfo user, String password){
+        Optional<UserInfo> found = userRepo.findByUsername(user.getUsername());
+        user.setPassword(encoder.encode(password));
+        userRepo.save(user);
+    }
+
     public UserInfo extractUserFromAuth(Authentication auth) {
         String username = auth.getName();
         return findByEmail(username)
@@ -48,6 +56,7 @@ public class UserService {
     }
 
     public boolean findByUsername(String username) {
+        log.info(userRepo.findByUsername(username).get());
         return userRepo.findByUsername(username).isPresent();
                 /*.orElseThrow(() -> new UsernameNotFoundException(
                 String.format("User `%s` not found", email)));*/
@@ -57,6 +66,7 @@ public class UserService {
         return userRepo.findByUsername(username).get();
 
     }
+
 
     public void update(UserInfo dbUser) {
         userRepo.save(dbUser);
