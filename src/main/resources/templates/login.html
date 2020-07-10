@@ -22,6 +22,12 @@
                 <div th:if="${param.error}">
                     <div class="error-message">username and password didn't match.</div>
                 </div>
+                <div th:if="${param.register}">
+                    <div class="error-message">email is confirmed, please log in.</div>
+                </div>
+                <div th:if="${param.reset}">
+                    <div class="error-message">password is confirmed, please log in.</div>
+                </div>
                 <div class="login-section-container-form-input-wrapper">
                     <img src="/img/mail-icon.svg" alt="User Icon">
                     <label for="username"></label>

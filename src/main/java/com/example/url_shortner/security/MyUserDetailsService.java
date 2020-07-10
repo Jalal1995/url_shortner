@@ -26,6 +26,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.isEnabled(),
                 user.getRoles()
         );
     }

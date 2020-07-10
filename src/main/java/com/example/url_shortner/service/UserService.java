@@ -2,10 +2,10 @@ package com.example.url_shortner.service;
 
 
 import com.example.url_shortner.dto.RegRqUser;
+import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,61 +21,50 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepo;
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder enc;
 
     public UserService(UserRepository userRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
-        this.encoder = encoder;
+        this.enc = encoder;
     }
 
-    public boolean registerNewUser(UserInfo user) {
-        Optional<UserInfo> found = userRepo.findByUsername(user.getUsername());
-        /*ModelMapper modelMapper = new ModelMapper();
-        UserInfo user = modelMapper.map(regRqUserDto, UserInfo.class);*/
-        user.setPassword(encoder.encode(user.getPassword()));
+    public void registerNewUser(ConfirmationToken token) {
+        UserInfo user = findByUsername(token.getUser().getUsername());
         user.setEnabled(true);
-        user.setRoles(new String[]{"USER"});
         userRepo.save(user);
-        return !found.isPresent();
     }
 
     public void updateUser(UserInfo user, String password){
         Optional<UserInfo> found = userRepo.findByUsername(user.getUsername());
-        user.setPassword(encoder.encode(password));
+        user.setPassword(enc.encode(password));
         userRepo.save(user);
     }
 
     public UserInfo extractUserFromAuth(Authentication auth) {
         String username = auth.getName();
-        return findByEmail(username)
+        return findByUsername(username);
+    }
+
+    public UserInfo findByUsername(String username) {
+        return userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("no user with username %s", username)));
     }
 
-    public Optional<UserInfo> findByEmail(String email) {
-        return userRepo.findByUsername(email);
+    public Optional<UserInfo> findOpUser(String username) {
+        return userRepo.findByUsername(username);
     }
 
-    public boolean findByUsername(String username) {
-        log.info(userRepo.findByUsername(username).get());
+    public boolean isUserExists(String username) {
         return userRepo.findByUsername(username).isPresent();
-                /*.orElseThrow(() -> new UsernameNotFoundException(
-                String.format("User `%s` not found", email)));*/
     }
 
-    public UserInfo findUser(String username) {
-        return userRepo.findByUsername(username).get();
-
+    public void save(UserInfo userInfo) {
+        userRepo.save(userInfo);
     }
 
-
-    public void update(UserInfo dbUser) {
-        userRepo.save(dbUser);
-    }
-
-    public UserInfo save(UserInfo userInfo) {
-        if (StringUtils.hasText(userInfo.getPassword())) {
-            userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        }
-        return userRepo.save(userInfo);
+    public void update(RegRqUser userRq) {
+        UserInfo user = findByUsername(userRq.getUsername());
+        user.setPassword(enc.encode(userRq.getPassword()));
+        save(user);
     }
 }

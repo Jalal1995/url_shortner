@@ -23,7 +23,10 @@
                                                     class="registration-section-container-description-link">Login</a></p>
             <form action="#" th:action="@{/registration}" th:object="${registerRq}" method="post" class="registration-section-container-form">
                 <div th:if="${param.error}">
-                    <div class="alert alert-danger">username already exists.</div>
+                    <div class="error-message">username already exists.</div>
+                </div>
+                <div th:if="${param.password}">
+                    <div class="error-message">confirm password didn't match.</div>
                 </div>
                 <div th:if="${param.success}">
                     <div class="alert alert-info">You've successfully registered

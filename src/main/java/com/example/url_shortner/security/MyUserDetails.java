@@ -12,13 +12,15 @@ public class MyUserDetails implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
+    private final boolean isEnabled;
     private final String[] roles;
 
-    public MyUserDetails(Long id, String username, String password, String... roles) {
+    public MyUserDetails(Long id, String username, String password, boolean isEnabled, String... roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.roles = roles;
+        this.isEnabled = isEnabled;
     }
 
     @Override
@@ -60,6 +62,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

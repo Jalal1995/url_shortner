@@ -18,12 +18,12 @@ public class VisitService {
         this.visitRepo = visitRepo;
     }
 
-    public Visit create(Url url){
+    public void create(Url url){
         Visit visit = Visit.builder()
                 .date(Instant.now())
                 .url(url)
                 .build();
-        return visitRepo.save(visit);
+        visitRepo.save(visit);
     }
 
 }

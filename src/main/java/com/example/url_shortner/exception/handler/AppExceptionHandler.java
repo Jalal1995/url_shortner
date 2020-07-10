@@ -1,5 +1,7 @@
 package com.example.url_shortner.exception.handler;
 
+import com.example.url_shortner.exception.InvalidLinkException;
+import com.example.url_shortner.exception.TokenNotFoundException;
 import com.example.url_shortner.exception.UrlNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +17,15 @@ public class AppExceptionHandler {
         ModelAndView mav = new ModelAndView();
         log.warn(String.format("exception caught: %s", ex.getMessage()));
         mav.setViewName("url-not-found-ex");
+        return mav;
+    }
+
+    @ExceptionHandler({InvalidLinkException.class, TokenNotFoundException.class})
+    public ModelAndView handleInvalidLinkException(InvalidLinkException ex) {
+        ModelAndView mav = new ModelAndView();
+        log.warn(String.format("exception caught: %s", ex.getMessage()));
+        mav.addObject("message", ex.getMessage());
+        mav.setViewName("error");
         return mav;
     }
 }

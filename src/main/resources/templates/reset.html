@@ -21,8 +21,10 @@
             <p class="registration-section-container-description">Create your account, it takes less than a minute.
                 If you already have an account - <a href="login.html"
                                                     class="registration-section-container-description-link">Login</a></p>
-            <form action="#" th:action="@{/registration}" th:object="${registerRq}" method="post" class="registration-section-container-form">
-
+            <form action="#" th:action="@{/reset-password}" th:object="${user}" method="post" class="registration-section-container-form">
+                <div th:if="${param.password}">
+                    <div class="error-message">confirm password doesn't match.</div>
+                </div>
                 <div class="registration-section-container-form-input-wrapper">
                     <img src="/img/lock-icon.svg" alt="User Icon">
                     <label for="password"></label>
@@ -35,6 +37,7 @@
                     <input class="registration-section-container-form-input" id="confirm-password"
                            placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}">
                 </div>
+                <input type="hidden" id="username" th:value="*{username}" th:field="*{username}">
                 <input type="submit" value="Create account" class="registration-section-container-form-submit">
             </form>
         </div>

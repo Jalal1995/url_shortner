@@ -50,12 +50,12 @@ public class FacebookController {
     public RedirectView facebookProfileData(@PathVariable String accessToken, Model model, HttpServletRequest req) {
 
         User user = facebookService.getFacebookUserProfile(accessToken);
-        Optional<UserInfo> optionalUserDb = userService.findByEmail(user.getEmail());
+        Optional<UserInfo> optionalUserDb = userService.findOpUser(user.getEmail());
         String role = "USER";
         if (optionalUserDb.isPresent()) {
             UserInfo dbUser = optionalUserDb.get();
             dbUser.setFullName(String.format("%s %s", user.getFirstName(), user.getLastName()));
-            userService.update(dbUser);
+            userService.save(dbUser);
             role = dbUser.getRoles()[0];
             model.addAttribute("user", dbUser);
         } else {
