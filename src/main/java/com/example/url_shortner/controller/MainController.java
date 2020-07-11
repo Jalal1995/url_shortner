@@ -3,6 +3,7 @@ package com.example.url_shortner.controller;
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UrlRepository;
+import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,16 +27,15 @@ import java.util.List;
 public class MainController {
 
     private final UserService userService;
-    private final UrlRepository urlRepository;
+    private final UrlService urlService;
 
     @GetMapping({"/main", "/"})
     public ModelAndView getMainPage(Authentication auth, ModelAndView mav, Model model,
                                     @RequestParam(defaultValue = "0") int page) {
         UserInfo user = userService.extractUserFromAuth(auth);
-        Page<Url> allByUser = urlRepository.findAllByUser(user, PageRequest.of(page, 4));
-        int totalPage = allByUser.getTotalPages() == 0 ? 1 : allByUser.getTotalPages();
-
-        model.addAttribute("data", urlRepository.findAllByUser(user, PageRequest.of(page, 4)));
+        Page<Url> urls = urlService.findAll(user, page);
+        int totalPage = urls.getTotalPages() == 0 ? 1 : urls.getTotalPages();
+        model.addAttribute("data", urls);
         model.addAttribute("totalPages", totalPage);
         model.addAttribute("currentPage", page);
         mav.addObject("user", user);
@@ -50,6 +50,4 @@ public class MainController {
         mav.setViewName("landing");
         return mav;
     }
-
-
 }

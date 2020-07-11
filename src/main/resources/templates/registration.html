@@ -36,25 +36,25 @@
                     <img src="/img/user-icon.svg" alt="User Icon">
                     <label for="full-name"></label>
                     <input class="registration-section-container-form-input" id="full-name" placeholder="Full name"
-                           type="text" th:field="*{fullName}">
+                           type="text" th:field="*{fullName}" required>
                 </div>
                 <div class="registration-section-container-form-input-wrapper">
                     <img src="/img/mail-icon.svg" alt="User Icon">
                     <label for="username"></label>
                     <input class="registration-section-container-form-input" id="username" placeholder="Email address"
-                           type="text" th:field="*{username}">
+                           type="email" th:field="*{username}" required>
                 </div>
                 <div class="registration-section-container-form-input-wrapper">
                     <img src="/img/lock-icon.svg" alt="User Icon">
                     <label for="password"></label>
                     <input class="registration-section-container-form-input" id="password" placeholder="Password"
-                           type="password" th:field="*{password}">
+                           type="password" th:field="*{password}" required>
                 </div>
                 <div class="registration-section-container-form-input-wrapper mb0">
                     <img src="/img/lock-icon.svg" alt="User Icon">
                     <label for="confirm-password"></label>
                     <input class="registration-section-container-form-input" id="confirm-password"
-                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}">
+                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}" required>
                 </div>
                 <input type="submit" value="Create account" class="registration-section-container-form-submit">
             </form>

@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
-@RequestMapping("/")
 @Log4j2
 @RequiredArgsConstructor
 public class UrlController {
@@ -25,9 +27,9 @@ public class UrlController {
     private final UserService userService;
     private final VisitService visitService;
 
-    @GetMapping("/tiny/{shortUrl}")
-    public RedirectView getUrl(@PathVariable String shortUrl) {
-        Url url = urlService.find(shortUrl);
+    @GetMapping("/tiny/{suffix}")
+    public RedirectView getUrl(@PathVariable String suffix) {
+        Url url = urlService.find(suffix);
         visitService.create(url);
         return new RedirectView(url.getFullUrl());
     }
@@ -36,14 +38,18 @@ public class UrlController {
     public ModelAndView create(@RequestParam String fullUrl,
                                Authentication auth,
                                ModelAndView mav){
-        boolean valid = urlService.isUrlValid(fullUrl);
-        if (!valid) throw new RuntimeException(String.format("URL Invalid: %s", fullUrl));
         UserInfo user = userService.extractUserFromAuth(auth);
         Url url = urlService.create(fullUrl, user);
-        log.info(user);
-        log.info(url);
-        mav.setViewName("new-url");
         mav.addObject("shortUrl", url.getShortUrl());
+        mav.setViewName("new-url");
         return mav;
+    }
+
+    @PostMapping("/active")
+    public RedirectView getEnable(@RequestParam String shortUrl,
+                                  @RequestParam(value = "myRadio", required = false) String myRadio) {
+        boolean isActive = myRadio != null;
+        urlService.update(shortUrl, isActive);
+        return new RedirectView(String.format("visit?shortUrl=%s", shortUrl));
     }
 }

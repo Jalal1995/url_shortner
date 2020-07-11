@@ -32,52 +32,35 @@ public class FacebookController {
 
     @GetMapping("/facebooklogin")
     public RedirectView facebookLogin() {
-        RedirectView redirectView = new RedirectView();
         String url = facebookService.facebookLogin();
-        log.info(url);
-        redirectView.setUrl(url);
-        return redirectView;
+        return new RedirectView(url);
     }
 
     @GetMapping("/facebook")
-    public String facebook(@RequestParam("code") String code) {
+    public RedirectView facebook(@RequestParam("code") String code) {
         String accessToken = facebookService.getFacebookAccessToken(code);
-        return "redirect:/facebookprofiledata/" + accessToken;
-
+        return new RedirectView(String.format("/facebookprofiledata/%s", accessToken));
     }
 
     @GetMapping("/facebookprofiledata/{accessToken:.+}")
     public RedirectView facebookProfileData(@PathVariable String accessToken, Model model, HttpServletRequest req) {
-
         User user = facebookService.getFacebookUserProfile(accessToken);
         Optional<UserInfo> optionalUserDb = userService.findOpUser(user.getEmail());
-        String role = "USER";
+        String role;
+        UserInfo dbUser;
         if (optionalUserDb.isPresent()) {
-            UserInfo dbUser = optionalUserDb.get();
+            dbUser = optionalUserDb.get();
             dbUser.setFullName(String.format("%s %s", user.getFirstName(), user.getLastName()));
-            userService.save(dbUser);
-            role = dbUser.getRoles()[0];
-            model.addAttribute("user", dbUser);
         } else {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setFullName(String.format("%s %s", user.getFirstName(), user.getLastName()));
-            userInfo.setUsername(user.getEmail());
-            userInfo.setRoles(new String[]{"USER"});
-            userService.save(userInfo);
-            role = userInfo.getRoles()[0];
-            model.addAttribute("user", userInfo);
+            dbUser = new UserInfo();
+            dbUser.setFullName(String.format("%s %s", user.getFirstName(), user.getLastName()));
+            dbUser.setUsername(user.getEmail());
+            dbUser.setRoles(new String[]{"USER"});
         }
-
-        securityService.autoLogin(user.getEmail(), null, role, req); // TODO why password is null?
-
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        Collection<? extends GrantedAuthority> grantedAuthorities =
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = grantedAuthorities.iterator();
-        while (iterator.hasNext()) {
-            log.info(iterator.next());
-        }
-        log.info(name);
+        userService.save(dbUser);
+        role = dbUser.getRoles()[0];
+        model.addAttribute("user", dbUser);
+        securityService.autoLogin(user.getEmail(), null, role, req);
         return new RedirectView("/main");
     }
 }

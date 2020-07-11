@@ -19,7 +19,7 @@
 </head>
 <body>
 <header class="main-header">
-    <a href="main-page.html" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
+    <a href="/main" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
                                                            alt="IBA Tech Academy"></a>
     <div class="main-header-wrapper">
         <div class="main-header-profile-wrapper">
@@ -35,7 +35,6 @@
     </div>
 </header>
 <main class="full-url-bg-container">
-    <img class="full-url-img" src="/img/full-url-robot.png" alt="flying robot">
     <div class="full-url-container">
         <h2 class="full-url-title">ENTER YOUR FULL URL</h2>
         <form th:action="@{/create}" method="post" class="full-url-input-container">
@@ -50,8 +49,7 @@
             <th>Short URL</th>
             <th>Full URL</th>
             <th>Visit count</th>
-            <th style="width: 60px;">Visit details</th>
-            <th style="width: 20px;">isEnabled</th>
+            <th style="width: 60px;">Url details</th>
             </thead>
             <tbody>
             <tr th:each="url : ${data.content}">
@@ -80,7 +78,6 @@
                         </form>
                     </div>
                 </td>
-                <td class="foo2" th:text="${url.isActive}">Enable
             </tr>
             </tbody>
         </table>

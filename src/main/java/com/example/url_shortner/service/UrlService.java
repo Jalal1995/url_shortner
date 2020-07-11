@@ -1,5 +1,6 @@
 package com.example.url_shortner.service;
 
+import com.example.url_shortner.exception.InvalidLinkException;
 import com.example.url_shortner.exception.UrlNotFoundException;
 import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.UserInfo;
@@ -9,6 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,13 +36,15 @@ public class UrlService {
     private final UrlRepository urlRepo;
 
     public Url create(String fullUrl, UserInfo user) {
-        String createdShortUrl = murmur3_32().hashString(fullUrl + user.getId(), StandardCharsets.UTF_8).toString();
-        urlRepo.findByShortUrl(URL_PREFIX + createdShortUrl).ifPresent(url -> {
-            throw new RuntimeException("you have already shorted this link");
-        });
+        if (!isUrlValid(fullUrl))
+            throw new InvalidLinkException(String.format("Url is invalid: %s", fullUrl));
+        String suffix =
+                murmur3_32().hashString(fullUrl + user.getId(), StandardCharsets.UTF_8).toString();
+        String shortUrl = URL_PREFIX + suffix;
+        if (isUrlExists(shortUrl)) throw new InvalidLinkException("you have already shortened this link");
 
         Url url = Url.builder()
-                .shortUrl(URL_PREFIX + createdShortUrl)
+                .shortUrl(shortUrl)
                 .fullUrl(fullUrl)
                 .creationDate(Instant.now())
                 .visitCount(0L)
@@ -50,9 +55,9 @@ public class UrlService {
         return urlRepo.save(url);
     }
 
-    public Url find(String shortUrl) {
-        Url url = urlRepo.findByShortUrlAndIsActive(URL_PREFIX + shortUrl, true)
-                .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", URL_PREFIX + shortUrl)));
+    public Url find(String suffix) {
+        Url url = urlRepo.findByShortUrlAndIsActive(URL_PREFIX + suffix, true)
+                .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", URL_PREFIX + suffix)));
         url.setVisitCount(url.getVisitCount() + 1);
         return urlRepo.save(url);
     }
@@ -67,5 +72,19 @@ public class UrlService {
     public Url findByShortUrl(String shortUrl) {
         return urlRepo.findByShortUrl(shortUrl)
                 .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", shortUrl)));
+    }
+
+    public void update(String shortUrl, boolean isActive) {
+        Url url = findByShortUrl(shortUrl);
+        url.setIsActive(isActive);
+        urlRepo.save(url);
+    }
+
+    public Page<Url> findAll(UserInfo user, int page) {
+        return urlRepo.findAllByUser(user, PageRequest.of(page, 4));
+    }
+
+    public boolean isUrlExists(String shortUrl) {
+        return urlRepo.findByShortUrl(shortUrl).isPresent();
     }
 }

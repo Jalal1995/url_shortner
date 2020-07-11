@@ -1,5 +1,8 @@
 package com.example.url_shortner.service;
 
+import com.example.url_shortner.exception.InvalidLinkException;
+import com.example.url_shortner.exception.TokenNotFoundException;
+import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.PasswordResetToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.PasswordTokenRepository;
@@ -38,11 +41,19 @@ public class ResetPasswordService {
         emailService.sendEmail(mailMessage);
     }
 
-    public Optional<PasswordResetToken> findByUsername(String username) {
-        return passTokenRepo.findByUser(userService.findByUsername(username));
+    public PasswordResetToken findByUsername(String username) {
+        return passTokenRepo.findByUser(userService.findByUsername(username))
+                .orElseThrow(() -> new TokenNotFoundException("token not found"));
     }
 
-    public Optional<PasswordResetToken> findByPasswordResetToken(String passwordResetToken) {
-        return passTokenRepo.findByToken(passwordResetToken);
+    public PasswordResetToken findByPasswordResetToken(String passwordResetToken) {
+        return passTokenRepo.findByToken(passwordResetToken)
+                .orElseThrow(() -> new InvalidLinkException("The link is invalid or broken!"));
+    }
+
+    public void delete(PasswordResetToken token) {
+        token.setUser(null);
+        passTokenRepo.save(token);
+        passTokenRepo.delete(token);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.url_shortner.service;
 
 import com.example.url_shortner.dto.RegRqUser;
+import com.example.url_shortner.exception.InvalidLinkException;
 import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.ConfirmationTokenRepository;
@@ -13,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class ConfirmationService {
 
     @Value("${app.url.prefix}")
-    private String url_prefix;
+    private String URL_PREFIX;
 
     private final ConfirmationTokenRepository confirmTokenRepo;
     private final EmailService emailService;
@@ -38,7 +37,7 @@ public class ConfirmationService {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         String message =
-                String.format("To confirm your account, please click here : %s/confirm-account?token=", url_prefix);
+                String.format("To confirm your account, please click here : %s/confirm-account?token=", URL_PREFIX);
         mailMessage.setTo(user.getUsername());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("url.shortener.spring@gmail.com");
@@ -46,7 +45,14 @@ public class ConfirmationService {
         emailService.sendEmail(mailMessage);
     }
 
-    public Optional<ConfirmationToken> findByConfirmationToken(String confirmationToken) {
-        return confirmTokenRepo.findByConfirmationToken(confirmationToken);
+    public ConfirmationToken findByConfirmationToken(String confirmationToken) {
+        return confirmTokenRepo.findByConfirmationToken(confirmationToken)
+                .orElseThrow(() -> new InvalidLinkException("The link is invalid or broken!"));
+    }
+
+    public void delete(ConfirmationToken token) {
+        token.setUser(null);
+        confirmTokenRepo.save(token);
+        confirmTokenRepo.delete(token);
     }
 }

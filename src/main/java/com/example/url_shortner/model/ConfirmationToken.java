@@ -1,6 +1,7 @@
 package com.example.url_shortner.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class ConfirmationToken {
 
     @Id
@@ -22,15 +24,12 @@ public class ConfirmationToken {
     private Date createdDate;
 
     @OneToOne(targetEntity = UserInfo.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, name ="user_id")
+    @JoinColumn(name ="user_id")
     private UserInfo user;
 
     public ConfirmationToken(UserInfo user){
         this.user = user;
         createdDate = new Date();
         confirmationToken = UUID.randomUUID().toString();
-    }
-
-    public ConfirmationToken() {
     }
 }

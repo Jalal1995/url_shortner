@@ -14,21 +14,21 @@ import org.springframework.stereotype.Service;
 public class FacebookService {
 
     @Value("${spring.social.facebook.app-id}")
-    private String facebook_id;
+    private String FACEBOOK_ID;
 
     @Value("${spring.social.facebook.app-secret}")
-    private String facebook_secret;
+    private String FACEBOOK_SECRET;
 
     @Value("${app.url.prefix}")
-    private String app_url_prefix;
+    private String APP_URL_PREFIX;
 
     private FacebookConnectionFactory createFacebookConnection() {
-        return new FacebookConnectionFactory(facebook_id, facebook_secret);
+        return new FacebookConnectionFactory(FACEBOOK_ID, FACEBOOK_SECRET);
     }
 
     public String facebookLogin() {
         OAuth2Parameters parameters = new OAuth2Parameters();
-        parameters.setRedirectUri(app_url_prefix + "/facebook");
+        parameters.setRedirectUri(APP_URL_PREFIX + "/facebook");
         parameters.setScope("public_profile, email");
         return createFacebookConnection().getOAuthOperations().buildAuthenticateUrl(parameters);
     }
@@ -36,7 +36,7 @@ public class FacebookService {
     public String getFacebookAccessToken(String code) {
         return createFacebookConnection()
                 .getOAuthOperations()
-                .exchangeForAccess(code, app_url_prefix + "/facebook", null)
+                .exchangeForAccess(code, APP_URL_PREFIX + "/facebook", null)
                 .getAccessToken();
     }
 

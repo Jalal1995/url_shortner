@@ -29,13 +29,13 @@
                     <img src="/img/lock-icon.svg" alt="User Icon">
                     <label for="password"></label>
                     <input class="registration-section-container-form-input" id="password" placeholder="Password"
-                           type="password" th:field="*{password}">
+                           type="password" th:field="*{password}" required>
                 </div>
                 <div class="registration-section-container-form-input-wrapper mb0">
                     <img src="/img/lock-icon.svg" alt="User Icon">
                     <label for="confirm-password"></label>
                     <input class="registration-section-container-form-input" id="confirm-password"
-                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}">
+                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}" required>
                 </div>
                 <input type="hidden" id="username" th:value="*{username}" th:field="*{username}">
                 <input type="submit" value="Create account" class="registration-section-container-form-submit">

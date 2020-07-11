@@ -5,6 +5,7 @@ import com.example.url_shortner.dto.RegRqUser;
 import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,20 +19,17 @@ import java.util.Optional;
 @Log4j2
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepo;
     private final PasswordEncoder enc;
 
-    public UserService(UserRepository userRepo, PasswordEncoder encoder) {
-        this.userRepo = userRepo;
-        this.enc = encoder;
-    }
-
     public void registerNewUser(ConfirmationToken token) {
         UserInfo user = findByUsername(token.getUser().getUsername());
         user.setEnabled(true);
         userRepo.save(user);
+
     }
 
     public UserInfo extractUserFromAuth(Authentication auth) {

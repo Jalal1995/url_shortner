@@ -1,8 +1,7 @@
 package com.example.url_shortner.controller;
 
 import com.example.url_shortner.dto.RegRqUser;
-import com.example.url_shortner.exception.InvalidLinkException;
-import com.example.url_shortner.exception.TokenNotFoundException;
+import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.PasswordResetToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.service.ConfirmationService;
@@ -39,8 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public RedirectView register(@ModelAttribute RegRqUser user,
-                                 RedirectAttributes ra) {
+    public RedirectView register(@ModelAttribute RegRqUser user, RedirectAttributes ra) {
         if (!user.getPassword().equals(user.getPasswordConfirm()))
             return new RedirectView("/registration?password");
         if (userService.isUserExists(user.getUsername()))
@@ -52,8 +50,9 @@ public class UserController {
 
     @GetMapping("/confirm-account")
     public RedirectView confirmUserAccount(@RequestParam("token") String confirmationToken) {
-        userService.registerNewUser(confirmService.findByConfirmationToken(confirmationToken)
-                .orElseThrow(() -> new InvalidLinkException("The link is invalid or broken!")));
+        ConfirmationToken token = confirmService.findByConfirmationToken(confirmationToken);
+        userService.registerNewUser(token);
+        confirmService.delete(token);
         return new RedirectView("/login?register");
     }
 
@@ -63,8 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/forgot")
-    public RedirectView reset(@RequestParam String username,
-                              RedirectAttributes attributes) {
+    public RedirectView reset(@RequestParam String username, RedirectAttributes attributes) {
         if (!userService.isUserExists(username))
             return new RedirectView("/forgot?userNotFound");
         UserInfo user = userService.findByUsername(username);
@@ -74,9 +72,9 @@ public class UserController {
     }
 
     @GetMapping("/confirm-reset")
-    public ModelAndView confirmReset(@RequestParam("token") String passwordResetToken, ModelAndView mav) {
-        PasswordResetToken token = passService.findByPasswordResetToken(passwordResetToken)
-                .orElseThrow(() -> new InvalidLinkException("The link is invalid or broken!"));
+    public ModelAndView confirmReset(@RequestParam("token") String passwordResetToken,
+                                     ModelAndView mav) {
+        PasswordResetToken token = passService.findByPasswordResetToken(passwordResetToken);
         RegRqUser user = new RegRqUser();
         user.setUsername(token.getUser().getUsername());
         mav.addObject("user", user);
@@ -86,15 +84,13 @@ public class UserController {
 
     @PostMapping("/reset-password")
     public RedirectView resetPassword(@ModelAttribute RegRqUser user) {
-        if (!user.getPassword().equals(user.getPasswordConfirm())) {
-            PasswordResetToken token = passService.findByUsername(user.getUsername())
-                    .orElseThrow(() -> new TokenNotFoundException("token not found"));
+        PasswordResetToken token = passService.findByUsername(user.getUsername());
+        if (!user.getPassword().equals(user.getPasswordConfirm()))
             return new RedirectView(String.format("/confirm-reset?token=%s", token.getToken()));
-        }
         userService.update(user);
+        passService.delete(token);
         return new RedirectView("/login?reset");
     }
-
 
     @GetMapping("/info")
     public ModelAndView getInfoPage(ModelAndView mav, @RequestParam String message) {

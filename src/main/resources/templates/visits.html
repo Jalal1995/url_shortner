@@ -18,8 +18,14 @@
     <meta charset="UTF-8">
     <title>Visits</title>
 </head>
-<a href="/logout" class="modal-main-btn">Log out</a>
+
+
 <body>
+<header class="main-header">
+    <a href="/main" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
+                                                           alt="IBA Tech Academy"></a>
+</header>
+<main class="full-url-bg-container">
 <table class="full-url-table">
     <tbody>
     <thead>
@@ -28,6 +34,7 @@
         <th>Short URL</th>
         <th>Full URL</th>
         <th>Visit count</th>
+        <th>Active</th>
     </tr>
     </thead>
     <tbody>
@@ -52,6 +59,30 @@
                 <input type="image" src="/img/full-url-arrow.png" alt="arrow">
             </form>
         </td>
+        <td>
+            <div>
+                <div th:if="${url.isActive}">
+                    <form action="/active" method="post">
+                        <label class="switch">
+                            <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                            <input type="checkbox" id="idactive" name="myRadio" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <input type="submit" name="send" value="submit"/>
+                    </form>
+                </div>
+                <div th:unless="${url.isActive}">
+                    <form action="/active" method="post">
+                        <label class="switch">
+                            <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                            <input type="checkbox" id="idactive" name="myRadio">
+                            <span class="slider"></span>
+                        </label>
+                        <input type="submit" name="send" value="submit"/>
+                    </form>
+                </div>
+            </div>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -66,7 +97,7 @@
     </thead>
     <tr th:each="visit, state : ${data.content}">
         <td th:text="${state.count}">visit no</td>
-        <td th:text="${#temporals.format(visit.date, 'dd.MM.yyyy - HH:mm')}">21.06.2020</td>
+        <td th:text="${#temporals.format(visit.date, 'dd.MM.yyyy - HH:mm:ss')}">21.06.2020</td>
     </tr>
 </table>
 <ul class="nav nav-pills">
@@ -76,16 +107,6 @@
             th:classappend="${currentPage}==${i}?'active':''"></a></li>
 </ul>
 <a href="/main" class="modal-main-btn">back to main</a>
-
-<div >
-    <form th:action="@{#}", method="post" >
-        <input type="radio" style="left: 10px" id="idactive" name="myRadio" value="true" checked>
-        <label for="idactive">active</label><br>
-        <input type="radio" style="left: 10px" id="iddeactive" name="myRadio" value="false">
-        <label for="iddeactive">deactive</label><br>
-        <input type="submit" class="check_button" name="send" value="done"/>
-    </form>
-</div>
-
+</main>
 </body>
 </html>
