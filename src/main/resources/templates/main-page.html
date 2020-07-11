@@ -39,7 +39,7 @@
     <div class="full-url-container">
         <h2 class="full-url-title">ENTER YOUR FULL URL</h2>
         <form th:action="@{/create}" method="post" class="full-url-input-container">
-            <label>
+            <label style="width: 100%">
                 <input class="full-url-input" type="text" required placeholder="Enter your URL" th:name="fullUrl">
             </label>
             <input type="submit" class="full-url-btn" value="SHORTEN">
@@ -51,6 +51,7 @@
             <th>Full URL</th>
             <th>Visit count</th>
             <th style="width: 60px;">Visit details</th>
+            <th style="width: 20px;">isEnabled</th>
             </thead>
             <tbody>
             <tr th:each="url : ${data.content}">
@@ -78,6 +79,9 @@
                             <input type="image" value="visit" src="/img/full-url-arrow.png" alt="arrow">
                         </form>
                     </div>
+                </td>
+                <td style="width: 20px;">
+                    1
                 </td>
             </tr>
             </tbody>

@@ -30,17 +30,22 @@
         <th>Visit count</th>
     </tr>
     </thead>
+    <tbody>
     <tr>
         <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy - HH:mm')}">21.06.2020</td>
         <td>
-            <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
-                fullUrl
-            </a>
+            <div class="foo-short">
+                <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
+                    shortUrl
+                </a>
+            </div>
         </td>
         <td>
-            <a th:href="@{${url.fullUrl}}" th:text="${url.fullUrl}">
-                fullUrl
-            </a>
+            <div class="foo">
+                <a th:href="@{${url.fullUrl}}" th:text="${url.fullUrl}">
+                    fullUrl
+                </a>
+            </div>
         </td>
         <td th:text="${url.visitCount}">visit count
             <form action="/" method="post">
@@ -48,6 +53,7 @@
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
 
 <table class="full-url-table">

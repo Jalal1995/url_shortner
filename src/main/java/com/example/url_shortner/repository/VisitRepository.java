@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Long> {
     Page<Visit> findAllByUrl(Url url, Pageable page);

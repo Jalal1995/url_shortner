@@ -28,18 +28,13 @@ public class VisitController {
     private final VisitRepository visitRepository;
 
     @GetMapping
-    public ModelAndView getVisitsPost(ModelAndView mav, Model model,
+    public ModelAndView getVisitsPost(ModelAndView mav,
                                       @RequestParam(defaultValue = "0") int page,
                                       @RequestParam String shortUrl){
         Url url = urlService.findByShortUrl(shortUrl);
-
-        model.addAttribute("data",  visitRepository.findAllByUrl( url,PageRequest.of(page,4)));
-        model.addAttribute("currentPage", page);
-
-
-        List<Visit> visits = url.getVisits();
+        mav.addObject("data",  visitRepository.findAllByUrl( url,PageRequest.of(page,4)));
+        mav.addObject("currentPage", page);
         mav.addObject("url", url);
-        //mav.addObject("visits", visits);
         mav.setViewName("visits");
         return mav;
     }

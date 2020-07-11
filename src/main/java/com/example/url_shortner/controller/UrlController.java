@@ -36,7 +36,6 @@ public class UrlController {
     public ModelAndView create(@RequestParam String fullUrl,
                                Authentication auth,
                                ModelAndView mav){
-
         boolean valid = urlService.isUrlValid(fullUrl);
         if (!valid) throw new RuntimeException(String.format("URL Invalid: %s", fullUrl));
         UserInfo user = userService.extractUserFromAuth(auth);

@@ -68,8 +68,4 @@ public class UrlService {
         return urlRepo.findByShortUrl(shortUrl)
                 .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", shortUrl)));
     }
-
-    public List<Url> findAll(Pageable of) {
-        return urlRepo.findAll();
-    }
 }

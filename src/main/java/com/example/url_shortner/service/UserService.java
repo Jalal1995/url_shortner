@@ -34,12 +34,6 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void updateUser(UserInfo user, String password){
-        Optional<UserInfo> found = userRepo.findByUsername(user.getUsername());
-        user.setPassword(enc.encode(password));
-        userRepo.save(user);
-    }
-
     public UserInfo extractUserFromAuth(Authentication auth) {
         String username = auth.getName();
         return findByUsername(username);

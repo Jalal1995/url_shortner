@@ -25,5 +25,4 @@ public class MyApplicationConfigurer implements WebMvcConfigurer {
                         .addResourceLocations(PREFIX + LOCATIONS[idx])
                 );
     }
-
 }
