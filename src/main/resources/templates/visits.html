@@ -71,10 +71,21 @@
 </table>
 <ul class="nav nav-pills">
     <li class="nav-item"
-        th:each="i : ${#numbers.sequence(0,data.totalPages - 1)}"><a
-            th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
+        th:each="i : ${#numbers.sequence(0,totalPages - 1)}"><a
+            th:href="@{'/visit?shortUrl=' +  ${shortUrl} + '&page='+${i}}" th:text="${i}" class="nav-link"
             th:classappend="${currentPage}==${i}?'active':''"></a></li>
 </ul>
 <a href="/main" class="modal-main-btn">back to main</a>
+
+<div >
+    <form th:action="@{#}", method="post" >
+        <input type="radio" style="left: 10px" id="idactive" name="myRadio" value="true" checked>
+        <label for="idactive">active</label><br>
+        <input type="radio" style="left: 10px" id="iddeactive" name="myRadio" value="false">
+        <label for="iddeactive">deactive</label><br>
+        <input type="submit" class="check_button" name="send" value="done"/>
+    </form>
+</div>
+
 </body>
 </html>

@@ -51,7 +51,7 @@ public class UrlService {
     }
 
     public Url find(String shortUrl) {
-        Url url = urlRepo.findByShortUrl(URL_PREFIX + shortUrl)
+        Url url = urlRepo.findByShortUrlAndIsActive(URL_PREFIX + shortUrl, true)
                 .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", URL_PREFIX + shortUrl)));
         url.setVisitCount(url.getVisitCount() + 1);
         return urlRepo.save(url);

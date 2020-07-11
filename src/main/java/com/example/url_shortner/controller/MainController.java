@@ -1,18 +1,23 @@
 package com.example.url_shortner.controller;
 
+import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.UrlRepository;
 import com.example.url_shortner.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Log4j2
 @Controller
@@ -27,7 +32,11 @@ public class MainController {
     public ModelAndView getMainPage(Authentication auth, ModelAndView mav, Model model,
                                     @RequestParam(defaultValue = "0") int page) {
         UserInfo user = userService.extractUserFromAuth(auth);
+        Page<Url> allByUser = urlRepository.findAllByUser(user, PageRequest.of(page, 4));
+        int totalPage = allByUser.getTotalPages() == 0 ? 1 : allByUser.getTotalPages();
+
         model.addAttribute("data", urlRepository.findAllByUser(user, PageRequest.of(page, 4)));
+        model.addAttribute("totalPages", totalPage);
         model.addAttribute("currentPage", page);
         mav.addObject("user", user);
         mav.setViewName("main-page");
@@ -41,4 +50,6 @@ public class MainController {
         mav.setViewName("landing");
         return mav;
     }
+
+
 }

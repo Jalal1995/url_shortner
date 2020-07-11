@@ -54,6 +54,21 @@
     right: 0;
 }
 
+.check_button {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: #FFFFFF;
+    background: #00298F;
+    border-radius: 10px;
+    padding: 15px 60px;
+    position: absolute;
+    left: 10px;
+}
+
+
 .full-url-img {
     position: absolute;
     z-index: 0;

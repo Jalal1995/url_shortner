@@ -28,7 +28,6 @@ public class ResetPasswordService {
     public void createResetPasswordToken(UserInfo user) {
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
         passTokenRepo.save(passwordResetToken);
-
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         String message =
                 String.format("To reset your password, please click here : %s/confirm-reset?token=", url_prefix);

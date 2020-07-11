@@ -80,15 +80,13 @@
                         </form>
                     </div>
                 </td>
-                <td style="width: 20px;">
-                    1
-                </td>
+                <td class="foo2" th:text="${url.isActive}">Enable
             </tr>
             </tbody>
         </table>
         <ul class="nav nav-pills">
             <li class="nav-item"
-                th:each="i : ${#numbers.sequence(0,data.totalPages - 1)}"><a
+                th:each="i : ${#numbers.sequence(0,totalPages - 1)}"><a
                     th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
                     th:classappend="${currentPage}==${i}?'active':''"></a></li>
         </ul>
