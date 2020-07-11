@@ -30,14 +30,14 @@ public class MainController {
     private final UrlService urlService;
 
     @GetMapping({"/main", "/"})
-    public ModelAndView getMainPage(Authentication auth, ModelAndView mav, Model model,
+    public ModelAndView getMainPage(Authentication auth, ModelAndView mav,
                                     @RequestParam(defaultValue = "0") int page) {
         UserInfo user = userService.extractUserFromAuth(auth);
         Page<Url> urls = urlService.findAll(user, page);
         int totalPage = urls.getTotalPages() == 0 ? 1 : urls.getTotalPages();
-        model.addAttribute("data", urls);
-        model.addAttribute("totalPages", totalPage);
-        model.addAttribute("currentPage", page);
+        mav.addObject("data", urls);
+        mav.addObject("totalPages", totalPage);
+        mav.addObject("currentPage", page);
         mav.addObject("user", user);
         mav.setViewName("main-page");
         return mav;

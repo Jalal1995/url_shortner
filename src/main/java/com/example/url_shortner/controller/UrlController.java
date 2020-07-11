@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @Log4j2
@@ -51,5 +52,17 @@ public class UrlController {
         boolean isActive = myRadio != null;
         urlService.update(shortUrl, isActive);
         return new RedirectView(String.format("visit?shortUrl=%s", shortUrl));
+    }
+
+    @GetMapping("/search")
+    public ModelAndView search(Authentication auth,
+                               @RequestParam String keyword,
+                               ModelAndView mav) {
+        UserInfo user = userService.extractUserFromAuth(auth);
+        List<Url> urls = urlService.search(keyword, user.getId());
+        mav.addObject("user", user);
+        mav.addObject("urls", urls);
+        mav.setViewName("main-search-page");
+        return mav;
     }
 }

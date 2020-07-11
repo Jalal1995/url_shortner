@@ -87,4 +87,8 @@ public class UrlService {
     public boolean isUrlExists(String shortUrl) {
         return urlRepo.findByShortUrl(shortUrl).isPresent();
     }
+
+    public List<Url> search(String keyword, Long id) {
+        return urlRepo.search(keyword, id);
+    }
 }
