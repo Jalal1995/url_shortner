@@ -7,9 +7,9 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:mysql://localhost:3306/url_shortener?seLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: 123456
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_0db43a596d5905f
+    username: bf88a4c93d33b2
+    password: 74ad14a3
 
   jpa:
     generate-ddl: true
