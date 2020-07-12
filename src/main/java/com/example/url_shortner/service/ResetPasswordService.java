@@ -2,7 +2,6 @@ package com.example.url_shortner.service;
 
 import com.example.url_shortner.exception.InvalidLinkException;
 import com.example.url_shortner.exception.TokenNotFoundException;
-import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.PasswordResetToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.PasswordTokenRepository;
@@ -12,8 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

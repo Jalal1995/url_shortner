@@ -1,5 +1,6 @@
 package com.example.url_shortner.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +19,11 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final MyUserDetailsService myUserDetailsService;
-
-    @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder, MyUserDetailsService myUserDetailsService) {
-        this.passwordEncoder = passwordEncoder;
-        this.myUserDetailsService = myUserDetailsService;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

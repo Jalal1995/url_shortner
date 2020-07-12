@@ -6,6 +6,7 @@ import com.example.url_shortner.model.ConfirmationToken;
 import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.repository.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -18,10 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @PropertySource("classpath:api.properties")
+@Log4j2
 public class ConfirmationService {
 
-    //@Value("${app.url.prefix}")
-    private String URL_PREFIX = "https://shortener-url-demo.herokuapp.com";
+    @Value("${app.url.prefix}")
+    private String URL_PREFIX;
 
     private final ConfirmationTokenRepository confirmTokenRepo;
     private final EmailService emailService;
@@ -46,6 +48,7 @@ public class ConfirmationService {
     }
 
     public ConfirmationToken findByConfirmationToken(String confirmationToken) {
+        log.info(confirmationToken);
         return confirmTokenRepo.findByConfirmationToken(confirmationToken)
                 .orElseThrow(() -> new InvalidLinkException("The link is invalid or broken!"));
     }
