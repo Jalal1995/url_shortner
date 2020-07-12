@@ -7,9 +7,9 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_0db43a596d5905f
-    username: bf88a4c93d33b2
-    password: 74ad14a3
+    url: jdbc:mysql://us-cdbr-east-02.cleardb.com/heroku_2f1e3f4c9d2c7
+    username: b4abc91fe42680
+    password: 200e8f80
 
   jpa:
     generate-ddl: true

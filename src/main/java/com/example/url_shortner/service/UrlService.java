@@ -30,8 +30,8 @@ import static com.google.common.hash.Hashing.murmur3_32;
 @Transactional
 public class UrlService {
 
-    @Value("${url.prefix}")
-    private String URL_PREFIX;
+    //@Value("${url.prefix}")
+    private String URL_PREFIX = "https://shortener-url-demo.herokuapp.com";
 
     private final UrlRepository urlRepo;
 

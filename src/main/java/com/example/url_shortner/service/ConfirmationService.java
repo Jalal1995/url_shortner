@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @PropertySource("classpath:api.properties")
 public class ConfirmationService {
 
-    @Value("${app.url.prefix}")
-    private String URL_PREFIX;
+    //@Value("${app.url.prefix}")
+    private String URL_PREFIX = "https://shortener-url-demo.herokuapp.com";
 
     private final ConfirmationTokenRepository confirmTokenRepo;
     private final EmailService emailService;
