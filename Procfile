@@ -1,0 +1,1 @@
+web: java -jar target/url_shortner-0.0.1-SNAPSHOT.jar
