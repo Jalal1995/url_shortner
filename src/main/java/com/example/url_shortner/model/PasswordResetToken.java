@@ -17,7 +17,7 @@ public class PasswordResetToken {
     @Column(name = "token_id")
     private long tokenId;
 
-    @Column(name = "confirmation_token")
+    @Column(name = "password_reset_token")
     private String token;
 
     @Temporal(TemporalType.TIMESTAMP)

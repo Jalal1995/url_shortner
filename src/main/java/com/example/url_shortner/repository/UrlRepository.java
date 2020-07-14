@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UrlRepository extends JpaRepository<Url, Long> {
+
     Optional<Url> findByShortUrl(String shortUrl);
 
     Optional<Url> findByShortUrlAndIsActive(String shortUrl, boolean isActive);

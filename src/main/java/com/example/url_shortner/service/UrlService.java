@@ -24,7 +24,7 @@ import static com.google.common.hash.Hashing.murmur3_32;
 
 @Service
 @Log4j2
-@PropertySource("classpath:url.properties")
+@PropertySource("classpath:app.properties")
 @RequiredArgsConstructor
 @Transactional
 public class UrlService {
@@ -62,9 +62,7 @@ public class UrlService {
     }
 
     public boolean isUrlValid(String fullUrl) {
-        UrlValidator urlValidator = new UrlValidator(
-                new String[]{"http", "https"}
-        );
+        UrlValidator urlValidator = new UrlValidator(new String[]{"http", "https"});
         return urlValidator.isValid(fullUrl);
     }
 

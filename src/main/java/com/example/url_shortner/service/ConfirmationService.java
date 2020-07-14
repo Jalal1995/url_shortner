@@ -18,12 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@PropertySource("classpath:api.properties")
+@PropertySource("classpath:app.properties")
 @Log4j2
 public class ConfirmationService {
 
     @Value("${app.url.prefix}")
     private String URL_PREFIX;
+
+    @Value("${app.email.address}")
+    private String APP_EMAIL;
 
     private final ConfirmationTokenRepository confirmTokenRepo;
     private final EmailService emailService;
@@ -34,17 +37,17 @@ public class ConfirmationService {
         UserInfo user = modelMapper.map(userRq, UserInfo.class);
         user.setPassword(enc.encode(userRq.getPassword()));
         user.setRoles(new String[]{"USER"});
-        ConfirmationToken confirmationToken = new ConfirmationToken(user);
-        confirmTokenRepo.save(confirmationToken);
+        ConfirmationToken token = confirmTokenRepo.save(new ConfirmationToken(user));
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        String message =
-                String.format("To confirm your account, please click here : %s/confirm-account?token=", URL_PREFIX);
-        mailMessage.setTo(user.getUsername());
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setFrom("url.shortener.spring@gmail.com");
-        mailMessage.setText(message + confirmationToken.getConfirmationToken());
-        emailService.sendEmail(mailMessage);
+        String message = String.format("To confirm your account, please click here : %s/confirm-account?token=%s",
+                        URL_PREFIX, token.getConfirmationToken());
+        String subject = "Complete Registration!";
+        emailService.sendMailMessage(
+                APP_EMAIL,
+                user.getUsername(),
+                subject,
+                message
+        );
     }
 
     public ConfirmationToken findByConfirmationToken(String confirmationToken) {

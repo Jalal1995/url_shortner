@@ -28,7 +28,7 @@ public class UserService {
     public void registerNewUser(ConfirmationToken token) {
         UserInfo user = findByUsername(token.getUser().getUsername());
         user.setEnabled(true);
-        userRepo.save(user);
+        save(user);
 
     }
 
@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public UserInfo findByUsername(String username) {
-        return userRepo.findByUsername(username)
+        return findOpUser(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("no user with username %s", username)));
     }
 
@@ -46,8 +46,8 @@ public class UserService {
         return userRepo.findByUsername(username);
     }
 
-    public boolean isUserExists(String username) {
-        return userRepo.findByUsername(username).isPresent();
+    public boolean isUserExist(String username) {
+        return findOpUser(username).isPresent();
     }
 
     public void save(UserInfo userInfo) {
@@ -57,6 +57,7 @@ public class UserService {
     public void update(RegRqUser userRq) {
         UserInfo user = findByUsername(userRq.getUsername());
         user.setPassword(enc.encode(userRq.getPassword()));
+        user.setEnabled(true);
         save(user);
     }
 }

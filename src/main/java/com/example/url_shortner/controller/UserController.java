@@ -41,7 +41,7 @@ public class UserController {
     public RedirectView register(@ModelAttribute RegRqUser user, RedirectAttributes ra) {
         if (!user.getPassword().equals(user.getPasswordConfirm()))
             return new RedirectView("/registration?password");
-        if (userService.isUserExists(user.getUsername()))
+        if (userService.isUserExist(user.getUsername()))
             return new RedirectView("/registration?error");
         confirmService.createConfirmationToken(user);
         ra.addAttribute("message", String.format("A verification email has been sent to: %s", user.getUsername()));
@@ -63,10 +63,10 @@ public class UserController {
 
     @PostMapping("/forgot")
     public RedirectView reset(@RequestParam String username, RedirectAttributes attributes) {
-        if (!userService.isUserExists(username))
+        if (!userService.isUserExist(username))
             return new RedirectView("/forgot?userNotFound");
         UserInfo user = userService.findByUsername(username);
-        passService.createResetPasswordToken(user);
+        passService.resetPassword(user);
         attributes.addAttribute("message", String.format("An email has been sent to: %s for reset password", user.getUsername()));
         return new RedirectView("/info");
     }

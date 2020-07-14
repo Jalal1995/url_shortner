@@ -10,7 +10,7 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Service;
 
 @Service
-@PropertySource("classpath:api.properties")
+@PropertySource("classpath:app.properties")
 public class FacebookService {
 
     @Value("${spring.social.facebook.app-id}")

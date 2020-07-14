@@ -12,34 +12,44 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
-@PropertySource("classpath:api.properties")
+@PropertySource("classpath:app.properties")
 public class ResetPasswordService {
 
     @Value("${app.url.prefix}")
-    private String url_prefix;
+    private String URL_PREFIX;
+
+    @Value("${app.email.address}")
+    private String APP_EMAIL;
 
     private final PasswordTokenRepository passTokenRepo;
     private final EmailService emailService;
     private final UserService userService;
 
-    public void createResetPasswordToken(UserInfo user) {
-        PasswordResetToken passwordResetToken = new PasswordResetToken(user);
-        passTokenRepo.save(passwordResetToken);
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        String message =
-                String.format("To reset your password, please click here : %s/confirm-reset?token=", url_prefix);
-        mailMessage.setTo(user.getUsername());
-        mailMessage.setSubject("Reset password");
-        mailMessage.setFrom("url.shortener.spring@gmail.com");
-        mailMessage.setText(message + passwordResetToken.getToken());
-        emailService.sendEmail(mailMessage);
+    public void resetPassword(UserInfo user) {
+        findOpTokenByUsername(user.getUsername()).ifPresent(this::delete);
+        PasswordResetToken token = passTokenRepo.save(new PasswordResetToken(user));
+        String message = String.format("To reset your password, please click here : %s/confirm-reset?token=%s",
+                        URL_PREFIX, token.getToken());
+        String subject = "Reset password";
+        emailService.sendMailMessage(
+                APP_EMAIL,
+                user.getUsername(),
+                subject,
+                message
+        );
+    }
+
+    public Optional<PasswordResetToken> findOpTokenByUsername(String username) {
+        return passTokenRepo.findByUser(userService.findByUsername(username));
     }
 
     public PasswordResetToken findByUsername(String username) {
-        return passTokenRepo.findByUser(userService.findByUsername(username))
+        return findOpTokenByUsername(username)
                 .orElseThrow(() -> new TokenNotFoundException("token not found"));
     }
 
