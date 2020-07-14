@@ -25,7 +25,7 @@ public class VisitController {
     private final VisitService visitService;
 
     @GetMapping
-    public ModelAndView getVisitsPost(ModelAndView mav,
+    public ModelAndView getVisits(ModelAndView mav,
                                       @RequestParam String shortUrl,
                                       @RequestParam(defaultValue = "0") int page) {
         Page<Visit> visits = visitService.findAll(shortUrl, page);
