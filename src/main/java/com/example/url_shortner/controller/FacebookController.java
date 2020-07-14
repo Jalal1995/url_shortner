@@ -61,6 +61,6 @@ public class FacebookController {
         role = dbUser.getRoles()[0];
         model.addAttribute("user", dbUser);
         securityService.autoLogin(user.getEmail(), null, role, req);
-        return new RedirectView("/main");
+        return new RedirectView("/landing");
     }
 }
