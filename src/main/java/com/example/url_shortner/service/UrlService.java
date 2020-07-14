@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.hash.Hashing.murmur3_32;
 
@@ -40,18 +41,21 @@ public class UrlService {
         String suffix =
                 murmur3_32().hashString(fullUrl + user.getId(), StandardCharsets.UTF_8).toString();
         String shortUrl = URL_PREFIX + suffix;
-        if (isUrlExists(shortUrl)) throw new InvalidLinkException("you have already shortened this link");
-
-        Url url = Url.builder()
-                .shortUrl(shortUrl)
-                .fullUrl(fullUrl)
-                .creationDate(Instant.now())
-                .visitCount(0L)
-                .isActive(true)
-                .user(user)
-                .visits(new ArrayList<>())
-                .build();
-        return urlRepo.save(url);
+        Optional<Url> opUrl = findOpByShortUrl(shortUrl);
+        if (!opUrl.isPresent()) {
+            Url url = Url.builder()
+                    .shortUrl(shortUrl)
+                    .fullUrl(fullUrl)
+                    .creationDate(Instant.now())
+                    .visitCount(0L)
+                    .isActive(true)
+                    .user(user)
+                    .visits(new ArrayList<>())
+                    .build();
+            return urlRepo.save(url);
+        } else {
+            return opUrl.get();
+        }
     }
 
     public Url find(String suffix) {
@@ -62,12 +66,16 @@ public class UrlService {
     }
 
     public boolean isUrlValid(String fullUrl) {
-        UrlValidator urlValidator = new UrlValidator(new String[]{"http", "https"});
+        UrlValidator urlValidator = new UrlValidator(new String[]{"http", "https", "magnet"});
         return urlValidator.isValid(fullUrl);
     }
 
+    public Optional<Url> findOpByShortUrl(String shortUrl) {
+        return urlRepo.findByShortUrl(shortUrl);
+    }
+
     public Url findByShortUrl(String shortUrl) {
-        return urlRepo.findByShortUrl(shortUrl)
+        return findOpByShortUrl(shortUrl)
                 .orElseThrow(() -> new UrlNotFoundException(String.format("no url for: %s", shortUrl)));
     }
 
@@ -79,10 +87,6 @@ public class UrlService {
 
     public Page<Url> findAll(UserInfo user, int page) {
         return urlRepo.findAllByUser(user, PageRequest.of(page, 4));
-    }
-
-    public boolean isUrlExists(String shortUrl) {
-        return urlRepo.findByShortUrl(shortUrl).isPresent();
     }
 
     public List<Url> search(String keyword, Long id) {
