@@ -5,6 +5,7 @@ import com.example.url_shortner.model.UserInfo;
 import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.UserService;
 import com.example.url_shortner.service.VisitService;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @Log4j2
@@ -29,9 +33,9 @@ public class UrlController {
     private final VisitService visitService;
 
     @GetMapping("/tiny/{suffix}")
-    public RedirectView getUrl(@PathVariable String suffix) {
+    public RedirectView getUrl(@PathVariable String suffix, HttpServletRequest req) throws IOException, GeoIp2Exception {
         Url url = urlService.find(suffix);
-        visitService.create(url);
+        visitService.create(url, req);
         return new RedirectView(url.getFullUrl());
     }
 

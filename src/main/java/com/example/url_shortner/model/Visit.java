@@ -28,4 +28,12 @@ public class Visit {
             joinColumns = @JoinColumn(name = "visit_id", referencedColumnName = "visit_id"),
             inverseJoinColumns = @JoinColumn(name = "url_id", referencedColumnName = "url_id"))
     private Url url;
+
+    private String country;
+    private String city;
+    private String ipAddress;
+    private String operationSystem;
+    private String browser;
+    private String browserVersion;
+
 }
