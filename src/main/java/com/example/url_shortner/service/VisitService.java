@@ -42,7 +42,7 @@ public class VisitService {
     public VisitService(VisitRepository visitRepo, UrlService urlService) throws IOException {
         this.visitRepo = visitRepo;
         this.urlService = urlService;
-        File database = new File("GeoLite2-City.mmdb");
+        File database = new File("src/main/resources/GeoLite2-City.mmdb");
         dbReader = new DatabaseReader.Builder(database).build();
     }
 
