@@ -88,8 +88,6 @@
 </table>
 
 <table class="full-url-table">
-    <tbody>
-    <thead>
     <tr>
         <th>visit no</th>
         <th>visit date</th>
@@ -100,16 +98,15 @@
         <th>browser<th>
         <th>browser version<th>
     </tr>
-    </thead>
     <tr th:each="visit, state : ${data.content}">
         <td th:text="${state.count + currentPage * 4}">visit no</td>
         <td th:text="${#temporals.format(visit.date, 'dd.MM.yyyy - HH:mm:ss')}">21.06.2020</td>
-        <td th:text="${visit.country}"></td>
-        <td th:text="${visit.city}"></td>
-        <td th:text="${visit.ipAddress}"></td>
-        <td th:text="${visit.operationSystem}"></td>
-        <td th:text="${visit.browser}"></td>
-        <td th:text="${visit.browserVersion}"></td>
+        <td th:text="${visit.country}">country</td>
+        <td th:text="${visit.city}">city</td>
+        <td th:text="${visit.ipAddress}">ipAddress</td>
+        <td th:text="${visit.operationSystem}">operationSystem</td>
+        <td th:text="${visit.browser}">browser</td>
+        <td th:text="${visit.browserVersion}">browserVersion</td>
     </tr>
 </table>
 <ul class="nav nav-pills">
