@@ -35,6 +35,9 @@ public class Url {
 
     private Long visitCount;
 
+    @Column(name = "expiration_date")
+    private Instant expirationDate;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "user_urls",

@@ -7,7 +7,7 @@ spring:
     banner-mode: off
 
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/url_shortener}
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/url_shortener?useLegacyDatetimeCode=false&serverTimezone=UTC}
     username: ${JDBC_DATABASE_USERNAME:root}
     password: ${JDBC_DATABASE_PASSWORD:123456}
 

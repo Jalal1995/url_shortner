@@ -17,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.google.common.hash.Hashing.murmur3_32;
 
@@ -51,6 +49,7 @@ public class UrlService {
                     .isActive(true)
                     .user(user)
                     .visits(new ArrayList<>())
+                    //.expirationDate()
                     .build();
             return urlRepo.save(url);
         } else {
@@ -92,4 +91,7 @@ public class UrlService {
     public List<Url> search(String keyword, Long id) {
         return urlRepo.search(keyword, id);
     }
+
+
+
 }
