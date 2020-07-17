@@ -12,11 +12,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 import static com.google.common.hash.Hashing.murmur3_32;
@@ -49,7 +53,7 @@ public class UrlService {
                     .isActive(true)
                     .user(user)
                     .visits(new ArrayList<>())
-                    //.expirationDate()
+                    .expirationDate(ZonedDateTime.now(ZoneOffset.UTC).plusYears(1).toInstant())
                     .build();
             return urlRepo.save(url);
         } else {
@@ -92,6 +96,14 @@ public class UrlService {
         return urlRepo.search(keyword, id);
     }
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void scheduleExpirationDate() {
+        urlRepo.checkExpiration();
+    }
 
-
+    public void changeExpirationDate(String shortUrl, String date) throws ParseException {
+        Url url = findByShortUrl(shortUrl);
+        url.setExpirationDate(new SimpleDateFormat("yyyy-MM-dd").parse(date).toInstant());
+        urlRepo.save(url);
+    }
 }

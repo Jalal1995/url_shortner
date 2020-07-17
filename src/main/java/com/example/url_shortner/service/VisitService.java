@@ -4,6 +4,7 @@ import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.Visit;
 import com.example.url_shortner.repository.VisitRepository;
 import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -44,34 +48,42 @@ public class VisitService {
         this.urlService = urlService;
         File database = new File("src/main/resources/GeoLite2-City.mmdb");
         dbReader = new DatabaseReader.Builder(database).build();
+
     }
 
-    public void create(Url url, HttpServletRequest req) throws IOException, GeoIp2Exception {
+    public void create(Url url, HttpServletRequest req) {
 
-        String ipAddress =  IP_HEADERS.stream()
+        String ipAddress = IP_HEADERS.stream()
                 .map(req::getHeader)
                 .filter(Objects::nonNull)
                 .filter(ip -> !ip.isEmpty() && !ip.equalsIgnoreCase("unknown"))
                 .findFirst()
                 .orElseGet(req::getRemoteAddr);
-        log.info(ipAddress);
 
-        InetAddress inetAddress = InetAddress.getByName(ipAddress);
-        CityResponse countryResponse = dbReader.city(inetAddress);
         UserAgent userAgent = UserAgent.parseUserAgentString(req.getHeader("User-Agent"));
-        log.info("{} {} ", userAgent.getBrowser().name(), userAgent.getBrowser().getName());
-
+        String city;
+        String country;
+        try {
+            InetAddress inetAddress = InetAddress.getByName(ipAddress);
+            CityResponse countryResponse = dbReader.city(inetAddress);
+            city = countryResponse.getCity().getName();
+            country = countryResponse.getCountry().getName();
+        } catch (GeoIp2Exception | IOException e) {
+            log.warn("exception caught", e);
+            city = "no value";
+            country = "no value";
+        }
         Visit visit = Visit.builder()
-                .city(countryResponse.getCity().getName())
-                .country(countryResponse.getCountry().getName())
-                .ipAddress(ipAddress)
-                .browser(userAgent.getBrowser().name())
-                .browserVersion(userAgent.getBrowserVersion().getVersion())
-                .operationSystem(userAgent.getOperatingSystem().getName())
-                .date(Instant.now())
-                .url(url)
-                .build();
-        visitRepo.save(visit);
+                    .city(city)
+                    .country(country)
+                    .ipAddress(ipAddress)
+                    .browser(userAgent.getBrowser().getName())
+                    .browserVersion(userAgent.getBrowserVersion().getVersion())
+                    .operationSystem(userAgent.getOperatingSystem().getName())
+                    .date(Instant.now())
+                    .url(url)
+                    .build();
+            visitRepo.save(visit);
     }
 
     public Page<Visit> findAll(String shortUrl, int page) {

@@ -30,5 +30,5 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Modifying
     @Query(value = "UPDATE URL SET is_active = 0 WHERE expiration_date <= NOW() AND is_active = 1", nativeQuery = true)
     @Transactional
-    void checkTime();
+    void checkExpiration();
 }

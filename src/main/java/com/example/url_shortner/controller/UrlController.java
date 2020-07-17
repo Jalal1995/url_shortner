@@ -19,6 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +59,14 @@ public class UrlController {
         return new RedirectView(String.format("visit?shortUrl=%s", shortUrl));
     }
 
+    @PostMapping("/active-main")
+    public RedirectView getEnabled(@RequestParam String shortUrl,
+                                  @RequestParam(value = "myRadio", required = false) String myRadio) {
+        boolean isActive = myRadio != null;
+        urlService.update(shortUrl, isActive);
+        return new RedirectView("main");
+    }
+
     @GetMapping("/search")
     public ModelAndView search(Authentication auth,
                                @RequestParam String keyword,
@@ -68,5 +77,16 @@ public class UrlController {
         mav.addObject("urls", urls);
         mav.setViewName("main-search-page");
         return mav;
+    }
+
+    @PostMapping("/expiration")
+    public RedirectView changeExpirationDate(@RequestParam String shortUrl,
+                                             @RequestParam String date,
+                                             RedirectAttributes ra) throws ParseException {
+        log.info(date);
+        log.info(shortUrl);
+        urlService.changeExpirationDate(shortUrl, date);
+        ra.addAttribute("shortUrl", shortUrl);
+        return new RedirectView("/visit");
     }
 }
