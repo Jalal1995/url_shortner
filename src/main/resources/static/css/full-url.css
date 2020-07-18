@@ -123,8 +123,9 @@ thead {
 th {
     font-weight: 500;
     font-size: 25px;
-    color: #FFFFFF;
+    color: #00298f;
     padding: 10px 10px;
+    text-align: center;
     border: .5 solid #7D91C1;
 }
 
