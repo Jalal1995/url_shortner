@@ -1,5 +1,6 @@
 package com.example.url_shortner.controller;
 
+import com.example.url_shortner.model.Url;
 import com.example.url_shortner.model.Visit;
 import com.example.url_shortner.service.UrlService;
 import com.example.url_shortner.service.VisitService;
@@ -28,7 +29,8 @@ public class VisitController {
     public ModelAndView getVisits(@RequestParam String shortUrl,
                                   @RequestParam(defaultValue = "1") int page) {
         Page<Visit> visits = visitService.findAll(shortUrl, page - 1);
-        int totalPage = Math.max(visits.getTotalPages(), 2);
+        int totalPage = Math.max(visits.getTotalPages(), 1);
+
         ModelAndView mav = new ModelAndView("visits");
         mav.addObject("data", visits);
         mav.addObject("totalPages", totalPage);

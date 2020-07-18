@@ -83,44 +83,7 @@
                 </td>
                 <td class="foo2" th:text="${url.visitCount}">visit count
                 </td>
-                <td>
-                    <div>
-                        <!--/*@thymesVar id="isActive" type="java.util.Map"*/-->
-                        <div th:if="${url.isActive}">
-                            <form action="/active-main" method="post" id="form1">
-                                <label class="switch">
-                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-                                    <input type="checkbox" id="idactive" name="myRadio" checked>
-                                    <span class="slider"></span>
-                                </label>
-                            </form>
-                            <script type="text/javascript">
-                                $(function () {
-                                    $('#idactive').on('change', function () {
-                                        $('#form1').submit();
-                                    });
-                                });
-                            </script>
-                        </div>
-                        <div th:unless="${url.isActive}">
-                            <form th:action="@{/active-main}" th:method="post" id="form2">
-                                <label class="switch">
-                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-                                    <input type="checkbox" id="idactivemain" name="checkboxMain">
-                                    <span class="slider"></span>
-                                </label>
-                            </form>
-                            <script type="text/javascript">
-                                $(function () {
-                                    $('#idactivemain').on('change', function () {
-                                        $('#form2').submit();
-                                    });
-                                });
-                            </script>
-                        </div>
-                    </div>
-
-                </td>
+                <td th:text="${url.isActive} ? 'ACTIVE' : 'INACTIVE'"></td>
                 <td>
                     <div class="foo2">
                         <form th:action="@{/visit}" method="get">
@@ -134,7 +97,7 @@
         </table>
         <ul class="nav nav-pills">
             <li class="nav-item"
-                th:each="i : ${#numbers.sequence(1,totalPages)}"><a
+                th:each="i : ${#numbers.sequence(1 ,totalPages )}"><a
                     th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
                     th:classappend="${currentPage}==${i}?'active':''"></a></li>
         </ul>

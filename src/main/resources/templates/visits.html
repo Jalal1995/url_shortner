@@ -114,18 +114,12 @@
         <tr>
             <th>visit no</th>
             <th>visit date</th>
-            <th>country
-            <th>
-            <th>city
-            <th>
-            <th>ip address
-            <th>
-            <th>operation system
-            <th>
-            <th>browser
-            <th>
-            <th>browser version
-            <th>
+            <th>country</th>
+            <th>city</th>
+            <th>ip address</th>
+            <th>operation system</th>
+            <th>browser</th>
+            <th>browser version</th>
         </tr>
         <tr th:each="visit, state : ${data.content}">
             <td th:text="${state.count + currentPage * 4}">visit no</td>
@@ -143,6 +137,7 @@
             th:each="i : ${#numbers.sequence(1 ,totalPages)}"><a
                 th:href="@{'/visit?shortUrl=' +  ${url.shortUrl} + '&page='+${i}}" th:text="${i}" class="nav-link"
                 th:classappend="${currentPage}==${i}?'active':''"></a></li>
+
     </ul>
     <a href="/main" class="modal-main-btn">back to main</a>
 </main>

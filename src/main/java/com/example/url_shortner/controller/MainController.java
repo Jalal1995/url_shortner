@@ -34,7 +34,7 @@ public class MainController {
                                     @RequestParam(defaultValue = "1") int page) {
         UserInfo user = userService.extractUserFromAuth(auth);
         Page<Url> urls = urlService.findAll(user, page - 1);
-        int totalPage = Math.max(urls.getTotalPages(), 2);
+        int totalPage = Math.max(urls.getTotalPages(), 1);
         mav.addObject("data", urls);
         mav.addObject("totalPages", totalPage);
         mav.addObject("currentPage", page);
