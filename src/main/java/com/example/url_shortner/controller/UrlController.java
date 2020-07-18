@@ -61,9 +61,12 @@ public class UrlController {
 
     @PostMapping("/active-main")
     public RedirectView getEnabled(@RequestParam String shortUrl,
-                                  @RequestParam(value = "myRadio", required = false) String myRadio) {
-        boolean isActive = myRadio != null;
+                                  @RequestParam(value = "checkboxMain", required = false) String checkboxMain) {
+        log.info(shortUrl);
+        boolean isActive = checkboxMain != null;
         urlService.update(shortUrl, isActive);
+        log.info("checkboxMain " + checkboxMain);
+        log.info("isActive " + isActive);
         return new RedirectView("main");
     }
 

@@ -103,22 +103,23 @@
                             </script>
                         </div>
                         <div th:unless="${url.isActive}">
-                            <form action="/active-main" method="post" id="form2">
+                            <form th:action="@{/active-main}" th:method="post" id="form2">
                                 <label class="switch">
                                     <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-                                    <input type="checkbox" id="idactive" name="myRadio">
+                                    <input type="checkbox" id="idactivemain" name="checkboxMain">
                                     <span class="slider"></span>
                                 </label>
                             </form>
                             <script type="text/javascript">
                                 $(function () {
-                                    $('#idactive').on('change', function () {
+                                    $('#idactivemain').on('change', function () {
                                         $('#form2').submit();
                                     });
                                 });
                             </script>
                         </div>
                     </div>
+
                 </td>
                 <td>
                     <div class="foo2">
@@ -133,7 +134,7 @@
         </table>
         <ul class="nav nav-pills">
             <li class="nav-item"
-                th:each="i : ${#numbers.sequence(0,totalPages - 1)}"><a
+                th:each="i : ${#numbers.sequence(1,totalPages)}"><a
                     th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
                     th:classappend="${currentPage}==${i}?'active':''"></a></li>
         </ul>

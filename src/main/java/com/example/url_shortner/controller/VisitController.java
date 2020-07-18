@@ -26,9 +26,9 @@ public class VisitController {
 
     @GetMapping
     public ModelAndView getVisits(@RequestParam String shortUrl,
-                                  @RequestParam(defaultValue = "0") int page) {
-        Page<Visit> visits = visitService.findAll(shortUrl, page);
-        int totalPage = visits.getTotalPages() == 0 ? 1 : visits.getTotalPages();
+                                  @RequestParam(defaultValue = "1") int page) {
+        Page<Visit> visits = visitService.findAll(shortUrl, page - 1);
+        int totalPage = Math.max(visits.getTotalPages(), 2);
         ModelAndView mav = new ModelAndView("visits");
         mav.addObject("data", visits);
         mav.addObject("totalPages", totalPage);

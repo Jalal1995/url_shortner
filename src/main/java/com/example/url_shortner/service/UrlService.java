@@ -92,6 +92,11 @@ public class UrlService {
         return urlRepo.findAllByUser(user, PageRequest.of(page, 4));
     }
 
+    public List<Url> findAll() {
+        return urlRepo.findAll();
+    }
+
+
     public List<Url> search(String keyword, Long id) {
         return urlRepo.search(keyword, id);
     }

@@ -31,10 +31,10 @@ public class MainController {
 
     @GetMapping({"/main", "/"})
     public ModelAndView getMainPage(Authentication auth, ModelAndView mav,
-                                    @RequestParam(defaultValue = "0") int page) {
+                                    @RequestParam(defaultValue = "1") int page) {
         UserInfo user = userService.extractUserFromAuth(auth);
-        Page<Url> urls = urlService.findAll(user, page);
-        int totalPage = urls.getTotalPages() == 0 ? 1 : urls.getTotalPages();
+        Page<Url> urls = urlService.findAll(user, page - 1);
+        int totalPage = Math.max(urls.getTotalPages(), 2);
         mav.addObject("data", urls);
         mav.addObject("totalPages", totalPage);
         mav.addObject("currentPage", page);
