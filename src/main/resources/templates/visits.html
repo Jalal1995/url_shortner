@@ -14,132 +14,124 @@
     <link rel="stylesheet" href="/css/user-profile.css">
     <link rel="stylesheet" href="/css/short-url.css">
     <link rel="stylesheet" href="/css/full-url.css">
-
     <meta charset="UTF-8">
     <title>Visits</title>
 </head>
-
-
 <body>
 <header class="main-header">
     <a href="/main" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
                                                   alt="IBA Tech Academy"></a>
 </header>
-<main class="full-url-bg-container">
-    <table class="full-url-table">
-        <tbody>
-        <thead>
-        <tr>
-            <th>Creation date</th>
-            <th>Short URL</th>
-            <th>Full URL</th>
-            <th>Visit count</th>
-            <th>Expiration date</th>
-            <th>Active</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy - HH:mm')}">21.06.2020 - 16:30</td>
-            <td>
-                <div class="foo-short">
-                    <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
-                        shortUrl
-                    </a>
-                </div>
-            </td>
-            <td>
-                <div class="foo">
-                    <a th:href="@{${url.fullUrl}}" th:text="${url.fullUrl}">
-                        fullUrl
-                    </a>
-                </div>
-            </td>
-            <td th:text="${url.visitCount}">visit count
-                <form action="/" method="post">
-                    <input type="image" src="/img/full-url-arrow.png" alt="arrow">
-                </form>
-            </td>
-
-            <td th:text="${#temporals.format(url.expirationDate, 'dd.MM.yyyy')}">21.06.2020
-
-            </td>
-            <td>
-                <div>
-                    <div th:if="${url.isActive}">
-                        <form action="/active" method="post" id="form">
-                            <label class="switch">
-                                <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-                                <input type="checkbox" id="idactive" name="myRadio" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </form>
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#idactive').on('change', function () {
-                                    $('#form').submit();
-                                });
-                            });
-                        </script>
+<div class="main-class" mainClass>
+    <div class="">
+        <table class="full-url-table">
+            <tbody>
+            <thead>
+            <tr>
+                <th>Creation date</th>
+                <th>Short URL</th>
+                <th>Full URL</th>
+                <th>Visit count</th>
+                <th>Expiration date</th>
+                <th>Active</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy - HH:mm')}">21.06.2020 - 16:30</td>
+                <td>
+                    <div class="foo-short">
+                        <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
+                            shortUrl
+                        </a>
                     </div>
-                    <div th:unless="${url.isActive}">
-                        <form action="/active" method="post" id="form">
-                            <label class="switch">
-                                <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-                                <input type="checkbox" id="idactive" name="myRadio">
-                                <span class="slider"></span>
-                            </label>
-                        </form>
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#idactive').on('change', function () {
-                                    $('#form').submit();
-                                });
-                            });
-                        </script>
+                </td>
+                <td>
+                    <div class="foo">
+                        <a th:href="@{${url.fullUrl}}" th:text="${url.fullUrl}">
+                            fullUrl
+                        </a>
                     </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <form method="post" action="/expiration">
-        <label>Change expiration date to:</label>
-        <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
-        <input type="date" name="date" value="01/31/2020"><br>
-        <input type="submit">
-    </form>
-
-    <table>
-        <tr>
-            <th>visit no</th>
-            <th>visit date</th>
-            <th>country</th>
-            <th>city</th>
-            <th>ip address</th>
-            <th>operation system</th>
-            <th>browser</th>
-            <th>browser version</th>
-        </tr>
-        <tr th:each="visit, state : ${data.content}">
-            <td th:text="${state.count + currentPage * 4}">visit no</td>
-            <td th:text="${#temporals.format(visit.date, 'dd.MM.yyyy - HH:mm:ss')}">21.06.2020</td>
-            <td th:text="${visit.country}">country</td>
-            <td th:text="${visit.city}">city</td>
-            <td th:text="${visit.ipAddress}">ipAddress</td>
-            <td th:text="${visit.operationSystem}">operationSystem</td>
-            <td th:text="${visit.browser}">browser</td>
-            <td th:text="${visit.browserVersion}">browserVersion</td>
-        </tr>
-    </table>
-    <ul class="nav nav-pills">
-        <li class="nav-item"
-            th:each="i : ${#numbers.sequence(1 ,totalPages)}"><a
-                th:href="@{'/visit?shortUrl=' +  ${url.shortUrl} + '&page='+${i}}" th:text="${i}" class="nav-link"
-                th:classappend="${currentPage}==${i}?'active':''"></a></li>
-
-    </ul>
-    <a href="/main" class="modal-main-btn">back to main</a>
-</main>
+                </td>
+                <td th:text="${url.visitCount}">visit count
+                </td>
+                <td th:text="${#temporals.format(url.expirationDate, 'dd.MM.yyyy')}">21.06.2020
+                </td>
+                <td>
+                    <div>
+                        <div th:if="${url.isActive}">
+                            <form action="/active" method="post" id="form">
+                                <label class="switch">
+                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                                    <input type="checkbox" id="idactive" name="myRadio" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#idactive').on('change', function () {
+                                        $('#form').submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div th:unless="${url.isActive}">
+                            <form action="/active" method="post" id="form">
+                                <label class="switch">
+                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                                    <input type="checkbox" id="idactive" name="myRadio">
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#idactive').on('change', function () {
+                                        $('#form').submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form method="post" action="/expiration">
+            <label>Change expiration date to:</label>
+            <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+            <input type="date" name="date" value="01/31/2020">
+            <input type="submit">
+        </form>
+        <table class="table-address">
+            <tr>
+                <th>visit no</th>
+                <th>visit date</th>
+                <th>country</th>
+                <th>city</th>
+                <th>ip address</th>
+                <th>operation system</th>
+                <th>browser</th>
+                <th>browser version</th>
+            </tr>
+            <tr th:each="visit, state : ${data.content}">
+                <td th:text="${state.count + (currentPage - 1) * 4}">visit no</td>
+                <td th:text="${#temporals.format(visit.date, 'dd.MM.yyyy - HH:mm:ss')}">21.06.2020</td>
+                <td th:text="${visit.country}">country</td>
+                <td th:text="${visit.city}">city</td>
+                <td th:text="${visit.ipAddress}">ipAddress</td>
+                <td th:text="${visit.operationSystem}">operationSystem</td>
+                <td th:text="${visit.browser}">browser</td>
+                <td th:text="${visit.browserVersion}">browserVersion</td>
+            </tr>
+        </table>
+        <ul class="nav nav-pills">
+            <li class="nav-item"
+                th:each="i : ${#numbers.sequence(1 ,totalPages)}"><a
+                    th:href="@{'/visit?shortUrl=' +  ${url.shortUrl} + '&page='+${i}}" th:text="${i}" class="nav-link"
+                    th:classappend="${currentPage}==${i}?'active':''"></a></li>
+        </ul>
+        <a href="/main" class="modal-main-btn">back to main</a>
+    </div>
+</div>
 </body>
 </html>

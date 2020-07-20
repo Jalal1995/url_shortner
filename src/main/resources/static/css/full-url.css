@@ -102,9 +102,9 @@ table {
 
 
 td {
-    border: .5px solid #ad9e9e;
+    border-right: .5px solid #ad9e9e;
     text-align: center;
-    padding: 0 20px;
+    padding: 5px 20px;
     font-size: 24px;
     color: #333333;
     background-color: #F9FAFC;
@@ -122,8 +122,8 @@ thead {
 
 th {
     font-weight: 500;
-    font-size: 25px;
-    color: #00298f;
+    font-size: 22px;
+    color: #FFFFFF;
     padding: 10px 10px;
     text-align: center;
     border: .5 solid #7D91C1;
@@ -220,10 +220,10 @@ th {
 .modal-main-btn {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 25px;
+    font-size: 20px;
     color: #333333;
     background-color: #fff;
-    padding: 20px 60px;
+    padding: 15px 40px;
     border: 0.5px solid #515766;
     border-radius: 20px;
     display: inline-block;
@@ -247,13 +247,13 @@ th {
     display: inline-block;
     text-decoration: none;
     margin-bottom: 20px;
-    transition: .5s;
+    transition: all .6s;
 }
 
 
 .modal-main-btn:hover {
-    box-shadow: 7px 7px 10px rgb(37, 36, 36);
-
+    background-color: #00298F;
+    color: #fff;
 }
 
 .switch {
@@ -314,4 +314,15 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+div[mainClass]{
+    margin: 0 20px;
+}
+table.table-address tr:first-child{
+    background-color: #7D91C1;
+}
+
+ul.nav-pills{
+    font-size: 18px;
 }
