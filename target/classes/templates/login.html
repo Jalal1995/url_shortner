@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Url Shortener: Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<div class="login-container">
+    <header class="header">
+        <a href="/main" class="header-link"><img src="/img/iba-login-logo.png" alt="IBA Tech Academy"></a>
+    </header>
+
+    <section class="login-section">
+        <img class="login-section-image" src="/img/login-img.png" alt="robot w/ computers">
+        <div class="login-section-container">
+            <h1 class="login-section-container-title">Welcome Back!</h1>
+            <p class="login-section-container-description">To keep connected with us please login with personal
+                information by email address and password</p>
+            <form action="/login" method="post" class="login-section-container-form">
+                <div th:if="${param.error}">
+                    <div class="error-message">username and password didn't match.</div>
+                </div>
+                <div th:if="${param.register}">
+                    <div class="error-message">email is confirmed, please log in.</div>
+                </div>
+                <div th:if="${param.reset}">
+                    <div class="error-message">password is confirmed, please log in.</div>
+                </div>
+                <div class="login-section-container-form-input-wrapper">
+                    <img src="/img/mail-icon.svg" alt="User Icon">
+                    <label for="username"></label>
+                    <input type="email" id="username" name="username" class="login-section-container-form-input"
+                           placeholder="Username" required="" autofocus="">
+                </div>
+                <div class="login-section-container-form-input-wrapper">
+                    <img src="/img/lock-icon.svg" alt="User Icon">
+                    <label for="password"></label>
+                    <input type="password" id="password" name="password" class="login-section-container-form-input"
+                           placeholder="Password" required="">
+                </div>
+                <div class="login-section-container-options">
+                    <div class="login-section-container-options-wrapper">
+                        <label for="remember-me" class="login-section-container-options-checkbox-wrapper">Remember Me
+                            <input type="checkbox" id="remember-me" name="remember-me" class="login-section-container-options-old-checkbox">
+                            <span class="login-section-container-options-checkmark"></span>
+                        </label>
+                    </div>
+                    <a href="forgot" class="login-section-container-options-link">Forgot
+                        password?</a>
+                </div>
+                <div class="login-section-form-buttons">
+                    <button type="submit" class="login-section-container-form-login">Login now</button>
+                    <a href="/registration" class="login-section-container-form-signup">Create account</a>
+                </div>
+                <div class="login-section-form-social">
+                    <div class="login-section-form-social-description-wrapper">
+                        <hr class="login-section-form-social-description-line">
+                        <span class="login-section-form-social-description">Or you can Join with</span>
+                        <hr class="login-section-form-social-description-line">
+                    </div>
+                    <div class="login-section-form-social-icon-wrapper">
+                        <a href="/facebooklogin" class="login-section-form-social-icon"><img src="/img/facebook.svg"
+                                                                                             alt="Facebook"></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+<script src="/js/checkbox.js"></script>
+</body>
+</html>

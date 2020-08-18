@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+    <meta charset="UTF-8">
+    <title>Tinder: Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/registration.css">
+</head>
+
+<body>
+<div class="registration-container">
+    <header class="header">
+        <a href="registration.html" class="header-link"><img src="/img/iba-login-logo.png"
+                                                             alt="IBA Tech Academy"></a>
+    </header>
+    <section class="registration-section">
+        <img class="registration-section-image" src="/img/login-img.png" alt="robot w/ computers">
+        <div class="registration-section-container">
+            <h1 class="registration-section-container-title">Create an account</h1>
+            <p class="registration-section-container-description">Create your account, it takes less than a minute.
+                If you already have an account - <a href="login.html"
+                                                    class="registration-section-container-description-link">Login</a></p>
+            <form action="#" th:action="@{/reset-password}" th:object="${user}" method="post" class="registration-section-container-form">
+                <div th:if="${param.password}">
+                    <div class="error-message">confirm password doesn't match.</div>
+                </div>
+                <div class="registration-section-container-form-input-wrapper">
+                    <img src="/img/lock-icon.svg" alt="User Icon">
+                    <label for="password"></label>
+                    <input class="registration-section-container-form-input" id="password" placeholder="Password"
+                           type="password" th:field="*{password}" required>
+                </div>
+                <div class="registration-section-container-form-input-wrapper mb0">
+                    <img src="/img/lock-icon.svg" alt="User Icon">
+                    <label for="confirm-password"></label>
+                    <input class="registration-section-container-form-input" id="confirm-password"
+                           placeholder="Confirm Password" type="password" th:field="*{passwordConfirm}" required>
+                </div>
+                <input type="hidden" id="username" th:value="*{username}" th:field="*{username}">
+                <input type="submit" value="Reset password" class="registration-section-container-form-submit">
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

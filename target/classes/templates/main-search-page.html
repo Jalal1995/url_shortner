@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL shortener: full url</title>
+    <link rel="stylesheet" href="/css/user-profile.css">
+    <link rel="stylesheet" href="/css/short-url.css">
+    <link rel="stylesheet" href="/css/full-url.css">
+</head>
+<body>
+<header class="main-header">
+    <a href="/main" class="main-header-logo"><img src="/img/iba-tech-logo-white.svg"
+                                                           alt="IBA Tech Academy"></a>
+    <div class="main-header-wrapper">
+        <div class="main-header-profile-wrapper">
+            <div class="main-header-profile-credentials">
+                <span class="main-header-username" th:text="${user.fullName}">full name</span>
+                <div class="log-out-block">
+                    <img src="/img/log-out-icon.svg" alt="Log out">
+                    <a href="/logout" class="log-out-btn">Log out</a>
+                </div>
+            </div>
+            <img class="main-header-XUser-icon" src="/img/user-icon-with-background.svg" alt="User Icon">
+        </div>
+    </div>
+</header>
+<main class="full-url-bg-container">
+    <div class="full-url-container">
+        <h2 class="full-url-title">ENTER YOUR FULL URL</h2>
+        <form th:action="@{/create}" method="post" class="full-url-input-container">
+            <label style="width: 100%">
+                <input class="full-url-input" type="text" required placeholder="Enter your URL" th:name="fullUrl">
+            </label>
+            <input type="submit" class="full-url-btn" value="SHORTEN">
+        </form>
+        <form action="/search" method="get">
+            Filter: <input type="text" name="keyword" id="keyword" size="50" required />
+            &nbsp;
+            <input type="submit" value="Search" />
+            &nbsp;
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+        </form>
+        <script type="text/javascript">
+            function clearSearch() {
+                window.location = "[[@{/}]]";
+            }
+        </script>
+        <table class="full-url-table">
+            <thead>
+            <th>Creation date</th>
+            <th>Short URL</th>
+            <th>Full URL</th>
+            <th>Visit count</th>
+            <th>Active</th>
+            <th style="width: 60px;">Url details</th>
+            </thead>
+            <tbody>
+            <tr th:each="url : ${urls}">
+                <td th:text="${#temporals.format(url.creationDate, 'dd.MM.yyyy')}">21.06.2020</td>
+                <td>
+                    <div class="foo-short">
+                        <a th:href="@{${url.shortUrl}}" th:text="${url.shortUrl}">
+                            fullUrl
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="foo">
+                        <a th:href="@{${url.fullUrl}}" th:text="${url.fullUrl}">
+                            fullUrl
+                        </a>
+                    </div>
+                </td>
+                <td class="foo2" th:text="${url.visitCount}">visit count
+                </td>
+                <td>
+                    <div>
+                        <div th:if="${url.isActive}">
+                            <form action="/active-main" method="post" id="form2">
+                                <label class="switch">
+                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                                    <input type="checkbox" id="idactive" name="myRadio" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#idactive').on('change', function () {
+                                        $('#form2').submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div th:unless="${url.isActive}">
+                            <form action="/active-main" method="post" id="form1">
+                                <label class="switch">
+                                    <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                                    <input type="checkbox" id="idactive" name="myRadio">
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#idactive').on('change', function () {
+                                        $('#form1').submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="foo2">
+                        <form th:action="@{/visit}" method="get">
+                            <input type="hidden" name="shortUrl" th:value="${url.shortUrl}">
+                            <input type="image" value="visit" src="/img/full-url-arrow.png" alt="arrow">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

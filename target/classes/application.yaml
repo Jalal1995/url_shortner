@@ -1,0 +1,33 @@
+server:
+  port: ${PORT:5000}
+
+
+spring:
+  main:
+    banner-mode: off
+
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/url_shortener?useLegacyDatetimeCode=false&serverTimezone=UTC}
+    username: ${JDBC_DATABASE_USERNAME:root}
+    password: ${JDBC_DATABASE_PASSWORD:123456}
+
+  jpa:
+    generate-ddl: true
+    hibernate.ddl-auto: update
+    show-sql: false
+
+  mail:
+    host:  smtp.gmail.com
+    port: 587
+    username: ${app.email.address}
+    password: ${app.email.password}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Url creating page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/user-profile.css">
+    <link rel="stylesheet" href="/css/short-url.css">
+    <link rel="stylesheet" href="/css/full-url.css">
+</head>
+<body>
+<div class="modal">
+    <div class="search-modal modal-window">
+        <div>
+            <h1 class="full-Url-title modal-search">Your short Url</h1>
+            <label for="demo1"></label>
+            <input type="text" class="modal-url-btn" id="demo1" th:value="${shortUrl}" disabled>
+        </div>
+        <button id="demo" class="modal-main-btn"
+                onclick="copyToClipboard(document.getElementById('demo1').value)">help me copy to the clipboard
+        </button>
+        <script>
+            function copyToClipboard(text) {
+                window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+            }
+        </script>
+        <a href="/main" class="modal-main-btn">back to main</a>
+    </div>
+</div>
+</body>
+</html>
